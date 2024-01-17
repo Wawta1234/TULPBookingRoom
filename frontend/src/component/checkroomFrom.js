@@ -15,7 +15,7 @@ export default function CheckroomFrom() {
               <option value="อาคารสิรินธรารัตน์">อาคารสิรินธรารัตน์</option>
               <option value="อาคารนวัตกรรมบริการ">อาคารนวัตกรรมบริการ</option>
               <option value="อาคารอเนกประสงค์และสนามกีฬาในร่ม">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
-              <option value="อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
+              
           <p>
             <label for="title">จำนวนผู้เข้าร่วม</label>
             <input type="text" name="numberofuser" />
