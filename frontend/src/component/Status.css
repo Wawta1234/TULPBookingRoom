@@ -1,0 +1,57 @@
+
+*{
+    margin: 0;
+    padding: 0;
+}
+.status h2{
+    margin-top: 30px;
+    color: #000000;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.item{
+    display: flex;
+    justify-content: space-between ;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 8px;
+    border-radius: 5px;
+    margin: 10px 70px;
+    padding: 10px;
+    align-items: center;
+}
+.item i{
+    font-size: 80px;
+    margin-right: 10px;
+}
+.item h2{
+    margin-right: 650px;
+    margin-top: 0%;
+}
+ .item button{
+    margin: 10px 10px;
+    margin-bottom: 30px;
+}
+.button{
+   background-color: rgb(70, 141, 0);
+   font-size : 20px;
+   padding: 5px;
+   border-radius: 10px;
+} 
+.disabled-button {
+    background-color: gray; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    cursor: not-allowed; 
+    padding: 5px;
+    border-radius: 10px;
+    font-size : 20px;
+}
+.button i{
+    margin: 0px;
+    font-size: 25px;
+}
+.disabled-button i{
+    margin: 0px;
+    font-size: 25px;
+}

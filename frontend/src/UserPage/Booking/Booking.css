@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+*{
+    font-family: 'Roboto', sans-serif; 
+    margin: 0;
+    padding: 0;
+}
+.content{
+    text-align: center;
+}
+.content h2{
+    margin-top: 30px;
+    color: #c3002f;
+}
+
+.content form{
+    margin-top: 20px;
+    font-size: 25px;
+    
+}
+.content form button{
+    background-color: #4caf50; /* สีเขียว */
+    color: white; /* สีของตัวอักษร */
+    font-size: 18px;
+    padding: 10px 50px; /* ขนาดของปุ่ม */
+    border: none; /* ไม่มีเส้นขอบ */
+    border-radius: 25px; /* ทำให้มีเส้นมนมีรูปร่าง */
+    cursor: pointer; /* เปลี่ยนรูปร่างของเคอร์เซอร์เป็นมือ */
+   
+
+}
+.content form button:hover {
+    background-color: #45a049; /* เมื่อผู้ใช้ชี้ตัวชี้ไปที่ปุ่ม */
+  }
+
+  /* booking3 */
+  /* Booking.css */
+
+  
+/* .contentbooking3 pre {
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+.contentbooking3 label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .contentbooking3 input[type="text"],
+  input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  span {
+    color: #ff0000;
+    margin-left: 5px;
+  }
+   */
+  button {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+   button.edit-btn {
+    background-color: #ffcc00;
+  }
+  
+   button:hover {
+    background-color: #45a049;
+  }
+  
+button.edit-btn:hover {
+    background-color: #e5b200;
+  }

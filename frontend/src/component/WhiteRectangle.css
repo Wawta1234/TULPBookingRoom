@@ -1,0 +1,14 @@
+/* WhiteRectangle.css */
+.white-rectangle {
+    margin-top: 10px;
+    margin-left: 20px;
+    text-align: center;
+    float: right;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    right: 10px;
+    width: 67%; 
+    height: 100%;
+    border-radius: 30px;
+  }
+  

@@ -1,0 +1,91 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fonts */
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400");
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+ .background-image {
+
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-position: center;
+     height: 100vh;
+    background-image: url('bj2.jpg'); 
+ }
+
+a{
+    text-decoration: none;
+    color: rgb(255, 0, 0);
+    text-transform: none;
+    transition: 0.25s ease; 
+    margin: 10px;
+    font-size: 15px;
+}
+ul{
+   
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+}
+ul li{
+    text-decoration: none;
+    margin: 0 0.75em 0 0.75em;
+}
+
+ul:hover a {
+    color: #050505;
+}
+ul:hover  a:hover{
+    color: rgb(255, 0, 0);
+    box-shadow: 0 2px 0 0 currentColor;
+}
+aside {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-radius: 30px;
+    width: 50px;
+    width: 600px; 
+    
+    border-radius: 30px; 
+}
+
+aside h2 {
+    margin: 50px 0 20px 0;
+    font-size: 40px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #c3002f;
+}
+
+aside input {
+    width: 70%;
+    height: 30px;
+    padding: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #c3002f;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+aside form button {
+    height: 40px;
+    width: 150px;
+    background-color: #ffd13f;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 20px;
+    margin: 20px;
+    border: 0;
+}
