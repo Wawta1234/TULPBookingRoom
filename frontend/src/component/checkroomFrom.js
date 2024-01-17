@@ -8,14 +8,14 @@ export default function CheckroomFrom() {
         <h2>กรุณากรอกข้อมูลให้ครบ</h2>
         <form action="" method="post">
           อาคาร
-          <select name="อาคาร ">
-            <option value="">-กรุณาเลือกอาคาร-</option>
-            <option value="">อาคารบุญชูปณิธาน</option>
-            <option value="">อาคารบุญชูปณิธาน</option>
-            <option value="">อาคารเรียนรวม 5 ชั้น</option>
-            <option value="">อาคารสิรินธรารัตน์</option>
-            <option value="">อาคารนวัตกรรมบริการ</option>
-          </select>
+          <option value="">-กรุณาเลือกอาคาร-</option>
+              <option value="อาคารบุญชูปณิธาน">อาคารบุญชูปณิธาน</option>
+              <option value="อาคารเรียนรวม 4 ชั้น">อาคารเรียนรวม 4 ชั้น</option>
+              <option value="อาคารเรียนรวม 5 ชั้น">อาคารเรียนรวม 5 ชั้น</option>
+              <option value="อาคารสิรินธรารัตน์">อาคารสิรินธรารัตน์</option>
+              <option value="อาคารนวัตกรรมบริการ">อาคารนวัตกรรมบริการ</option>
+              <option value="อาคารอเนกประสงค์และสนามกีฬาในร่ม">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
+              <option value="อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
           <p>
             <label for="title">จำนวนผู้เข้าร่วม</label>
             <input type="text" name="numberofuser" />
