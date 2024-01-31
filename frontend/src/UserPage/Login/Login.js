@@ -59,7 +59,7 @@ function Login() {
     <div className="background-image">
       <div className="container">
         <ul>
-          <li><a href="">ตรวจสอบสถานะห้องว่าง </a></li>
+          <li><a href="/checkRoomPublic">ตรวจสอบสถานะห้องว่าง </a></li>
           <li><a href="">รายละเอียดห้องที่ต้องเปิดประจำวัน </a></li>
         </ul>
 
