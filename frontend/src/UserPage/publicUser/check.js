@@ -1,4 +1,3 @@
-// CheckAvailability.js
 
 import React from "react";
 import WhiteRectangle from "../../component/WhiteRectangle";

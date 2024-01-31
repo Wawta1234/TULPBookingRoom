@@ -24,8 +24,7 @@ erDiagram
         time_slot_id INT
         start_time TIME
         end_time TIME
-        description VARCHAR(255)
-        color_code VARCHAR(10)
+    
     }
 
     RoomAvailability {
@@ -37,7 +36,7 @@ erDiagram
     }
 
     Users {
-        user_id INT,
+        user_id INT
         first_name VARCHAR(50)
         last_name VARCHAR(50)
         email VARCHAR(255)
