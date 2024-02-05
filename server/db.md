@@ -1,52 +1,47 @@
 ```mermaid
 erDiagram
-    Rooms {
-        room_id INT
-        capacity INT
-        building VARCHAR(50)
-        floors INT
-        computers INT
-        projectors INT
-        visualizers INT
+    Room {
+        Room_ID INT PK
+        Room_Name string
+        Status_room string
+        building string
+        floors int
+        computer int
+        projector int
+        micophone int
+        visualize int
     }
 
-    Reservations {
-        reservation_id INT
-        user_id INT
-        room_id INT
-        reservation_date DATE
-        time_slot INT
-        first_name VARCHAR(50)
-        last_name VARCHAR(50)
+    TimeSlot {
+        TimeSlot_ID INT PK
+        Time string
     }
 
-    TimeSlots {
-        time_slot_id INT
-        start_time TIME
-        end_time TIME
+    reservations {
+        ID INT PK
+        Room_ID INT fk
+        TimeSlot_ID INT  fk
+        User_ID INT fk
+        Status_reservations string
+        date string
+        approvalStatus int
+        
     
     }
 
-    RoomAvailability {
-        availability_id INT
-        room_id INT
-        date DATE
-        time_slot_id INT
-        is_available BOOLEAN
+    User {
+        ID INT PK
+        User_Id string
+        UserName string
+        Email string
     }
 
-    Users {
-        user_id INT
-        first_name VARCHAR(50)
-        last_name VARCHAR(50)
-        email VARCHAR(255)
-        password VARCHAR(255)
-    }
+    Room ||..|| TimeSlot : Allows
+    reservations ||--|| Room : Reserved 
+    reservations ||--|| TimeSlot : Reserved 
+    reservations ||--o| User : Reserved 
 
-    Rooms ||--o{ Reservations: "room_id"
-    Reservations ||--o{ Users: "user_id"
-    Reservations ||--o{ TimeSlots: "time_slot"
-    RoomAvailability ||--o{ Rooms: "room_id"
-    RoomAvailability ||--o{ TimeSlots: "time_slot"
+
+
 
 ```
