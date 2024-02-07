@@ -15,7 +15,7 @@ export default function Status() {
         console.error("Error fetching reservations data:", error);
       });
 
-    axios.get("http://localhost:8080/api/data/rooms")
+    axios.get("http://localhost:8080/api/data/allRooms")
       .then((response) => {
         setRooms(response.data);
       })
@@ -27,6 +27,7 @@ export default function Status() {
   const filterReservationsByStatus = (status) => {
     setFilterStatus(status);
   };
+  
 
   return (
     
