@@ -36,7 +36,7 @@ roomavailabilityRouter.post('/api/data/roomavailability/creat' , (req , res) =>{
 })
 
 
-roomavailabilityRouter.post('/api/data/roomavailability/update' , (req , res) =>{
+roomavailabilityRouter.put('/api/data/roomavailability/update' , (req , res) =>{
     console.log("Request body : " , req.body);
 
     const availability = req.body.availability;

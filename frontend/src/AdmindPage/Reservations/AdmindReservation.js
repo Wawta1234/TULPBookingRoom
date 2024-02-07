@@ -10,7 +10,7 @@ export default function AdmindReservation() {
     <Header />
     <AdminBar />
     <WhiteRectangle >
-        <StatusBar />
+        {/* <StatusBar /> */}
         <Status/>
 
     </WhiteRectangle>
