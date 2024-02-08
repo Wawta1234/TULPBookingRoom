@@ -12,6 +12,9 @@ export default function Booking2() {
 
   const navigate = useNavigate();
 
+
+  console.log("Filter Criteria:", filterCriteria);
+  
   const navigateToBooking= () => {
     navigate("/Booking");
   };

@@ -94,3 +94,5 @@ userRouter.delete('/api/data/user/delete/:id', (req, res) => {
         }
     });
 });
+
+module.exports = userRouter;

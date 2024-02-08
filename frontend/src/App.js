@@ -31,6 +31,7 @@ import AdmindReservationWait from "./AdmindPage/Reservations/AdmindReservationWa
 import HomeAdd from "./AdmindPage/AdmindTwo/Home";
 import AdmindReserTwo from "./AdmindPage/AdmindTwo/AdmindReserTwo";
 import CheckAvailability from "./UserPage/publicUser/check";
+import CheckAvailability2 from "./UserPage/publicUser/checkP2";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/home" element ={<Home />} />
+          
           <Route path="/Booking" element ={<Booking />} />
           <Route path="/Booking/booking2" element ={<Booking2/>}/>
           <Route path="/Booking/booking2/booking3" element ={<Booking3/>}/>
@@ -68,9 +70,8 @@ function App() {
           <Route path="/AdminHomeTwo" element={<HomeAdd/>} />
           <Route path="/AdmindReserTwo" element={<AdmindReserTwo/>} />
          <Route path="/checkRoomPublic" element ={<CheckAvailability/>} />
-        
-        
-        
+         <Route path="/checkRoomPublic/checkRoomPublic2" element ={<CheckAvailability2/>} />
+         
         
         </Routes>
       </div>

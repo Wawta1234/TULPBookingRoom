@@ -8,7 +8,7 @@ roomsRouter.get('/api/data/capacity', (req, res) => {
     const condition = req.query.condition; // Get the condition from the query parameters
 
     // SQL query to select capacity based on the condition
-    const query = "SELECT * FROM rooms WHERE capacity ";
+    const query = "SELECT * FROM rooms WHERE capacity  ";
 
 
     // Execute the query with the condition
@@ -22,9 +22,10 @@ roomsRouter.get('/api/data/capacity', (req, res) => {
     });
 });
 
+
 roomsRouter.get('/api/data/rooms/building', (req, res) => {
     const condition = req.query.condition; // Get the condition from the query parameters
-
+    console.log()
     // SQL query to select buildings based on the condition
     const query = "SELECT * FROM rooms WHERE building = ?";
 
@@ -37,6 +38,7 @@ roomsRouter.get('/api/data/rooms/building', (req, res) => {
             res.send(result);
         }
     });
+    
 });
 
 roomsRouter.get('/api/data/rooms/capacity', (req, res) => {
@@ -63,11 +65,7 @@ roomsRouter.get('/api/data/rooms/capacity', (req, res) => {
     });
 });
 
-
-
-
-
-roomsRouter.get('/api/data/rooms', (req, res) => {
+roomsRouter.get('/api/data/allRooms', (req, res) => {
     db.query("SELECT * FROM rooms", (err, result) => {
         if (err) {
             console.log(err);
@@ -77,6 +75,21 @@ roomsRouter.get('/api/data/rooms', (req, res) => {
         }
     });
 });
+
+
+
+roomsRouter.get('/api/data/rooms', (req, res) => {
+    // console.log(req.query)
+    db.query("SELECT * FROM rooms where  building = ? AND floors = ? ", [req.query.building, req.query.floor]  , (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 
 roomsRouter.post('/api/data/rooms/create', (req, res) => {
     console.log("Request body:", req.body);

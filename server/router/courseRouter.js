@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../connect'); // Correct the import statement
 
-const courseRouter = router
+const courseRouter = router;
 
 
 courseRouter.get('/api/data/course', (req, res) => {
@@ -106,3 +106,26 @@ courseRouter.delete('/api/data/course/delete/:id', (req, res) => {
         }
     });
 });
+
+
+
+//สำหรับแก้ไขข้อมูลรายวิชาในหน้า EditRoom
+courseRouter.get('/api/data/Editcourse', (req, res) =>{
+console.log(5555)
+     console.log(req.query)
+    db.query("SELECT * FROM course WHERE course_name = ?" , [req.query.course_name] ,(err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            res.send(result);
+        }
+    })
+    });
+
+
+
+
+
+
+module.exports = courseRouter;

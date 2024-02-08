@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AdminBar from "../../component/AdminBar";
 import Header from "../../component/Header";
 import WhiteRectangle from "../../component/WhiteRectangle";
 import { useNavigate } from "react-router-dom";
 import Room from "../../component/Room";
 import Swal from "sweetalert2";
+import axios from "axios";
+
 export default function RoomRec3() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [courseData, setCourseData] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/data/course")
+      .then((response) => {
+        setCourseData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching building data:", error);
+      });
+  });
+
   const handleConfirm = (e) => {
     e.preventDefault();
     Swal.fire({
@@ -16,10 +30,9 @@ export default function RoomRec3() {
     }).then(() => {
       navigate("/AdminHome");
     });
-
   };
 
-  const handleEditOptions= async (e, episodeNumber) => {
+  const handleEditOptions = async (e, episodeNumber) => {
     e.preventDefault();
 
     const result = await Swal.fire({
@@ -54,7 +67,6 @@ export default function RoomRec3() {
     console.log(`ลบบรรยายครั้งที่ ${episodeNumber} สำเร็จ`);
   };
 
-
   const navigateToHome = () => {
     navigate("/AdminHome");
   };
@@ -67,29 +79,79 @@ export default function RoomRec3() {
       <Header />
       <AdminBar />
       <WhiteRectangle>
-      <div className="content">
-        <p>รายวิชา : xxxxxx     อาจารย์ผู้สอน : xxxxxxxx xxxxxxxx 
-         <pre>ครั้งที่ 1 : วันที่ xx.xx.xxxx     เวลา : xx : xx         ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 2 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 3 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 4 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 5 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 6 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 7 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 8 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 9 : วันที่ xx.xx.xxxx       เวลา : xx : xx        ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 10 : วันที่ xx.xx.xxxx     เวลา : xx : xx       ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 11 : วันที่ xx.xx.xxxx     เวลา : xx : xx       ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions} ></i><br />
-            ครั้งที่ 12 : วันที่ xx.xx.xxxx     เวลา : xx : xx       ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            ครั้งที่ 13 : วันที่ xx.xx.xxxx     เวลา : xx : xx       ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions} ></i><br />
-            ครั้งที่ 14 : วันที่ xx.xx.xxxx     เวลา : xx : xx       ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions} ></i><br />
-            ครั้งที่ 15 : วันที่ xx.xx.xxxx     เวลา : xx : xx       ห้อง : xxxx  <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i> <i class="bi bi-trash" onClick={handleEditOptions}></i><br />
-            <button onClick={handleConfirm}>ตกลง </button>
-        </pre>
-        </p>
-
-      </div>
+        {courseData.map((course, index) => (
+          <div key={index}>
+        
+        <div className="content">
+          <p>
+            <per>รายวิชา : {course.course_name}     อาจารย์ผู้สอน : {course.teacher}</per>
+            <pre>
+              ครั้งที่ 1 : วันที่ xx.xx.xxxx     เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 2 : วันที่ xx.xx.xxxx      เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 3 : วันที่ xx.xx.xxxx      เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 4 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 5 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 6 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 7 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 8 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 9 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 10 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 11 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 12 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 13 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 14 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              ครั้งที่ 15 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
+              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
+              <i class="bi bi-trash" onClick={handleEditOptions}></i>
+              <br />
+              <button onClick={handleConfirm}>ตกลง </button>
+            </pre>
+          </p>
+        </div></div>
+        ))}
       </WhiteRectangle>
     </>
-  )
+  );
 }

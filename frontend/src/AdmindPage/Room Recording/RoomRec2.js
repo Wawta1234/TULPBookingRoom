@@ -3,9 +3,15 @@ import AdminBar from "../../component/AdminBar";
 import Header from "../../component/Header";
 import WhiteRectangle from "../../component/WhiteRectangle";
 import Room from "../../component/Room";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation } from "react-router-dom";
+
 export default function RoomRec2() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const filterCriteria = location.state;
+
+  console.log("Filter Criteria:", {filterCriteria});
+
   const navigateToRoomRec = () => {
     navigate("/RoomRecording");
   };
@@ -17,7 +23,10 @@ export default function RoomRec2() {
       <Header />
       <AdminBar />
       <WhiteRectangle>
-        <Room />
+        {/* Add a conditional check for filterCriteria */}
+        {filterCriteria && (
+          <Room building={filterCriteria.building} floor={filterCriteria.floor} />
+        )}
         <button className="edit-btn" onClick={navigateToRoomRec}>
           แก้ไข
         </button>

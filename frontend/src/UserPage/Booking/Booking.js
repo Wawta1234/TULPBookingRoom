@@ -86,7 +86,7 @@ export default function Booking() {
               จำนวนผู้เข้าร่วม :
               <input type="text" name="capacity" onChange={handleFilterChange} />
             </p>
-            <p>
+            <p>ห
               <input type="radio" name="room" id="" value="meeting" />
               ห้องประชุม
               <input type="radio" name="room" id="" value="class" />
