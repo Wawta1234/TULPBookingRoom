@@ -25,16 +25,16 @@ export default function EditRoom2() {
         console.log('data from subjec' ,response.data); 
         setsubjectData(response.data);
         let data = response.data[0].teacher_id;
-        console.log('data teacher id: ', data)
+        // console.log('data teacher id: ', data)
 
         axios.get(`http://localhost:8080/api/data/teacher`,{
-          params : {id : filterCriteria.data}
+          params : {id : data}
         })
           .then(response => {
-            console.log('data teacher id: ', data)
+            // console.log('data teacher id: ', data) 
             console.log('data from teacher' ,response.data); 
-            setTeacherName(response.data.teacher_name);
-            // console.log(response.data.teacher_name); 
+            setTeacherName(response.data[0].teacher_name);
+             
           })
           .catch(error => {
             console.error('Error fetching building data:', error);
