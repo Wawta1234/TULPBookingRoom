@@ -18,7 +18,6 @@ reservationRouter.get('/api/data/reservations', (req, res) => {
 reservationRouter.post('/api/data/reservations/create', (req, res) => {
     console.log("Request body: ", req.body);
 
-    const id = req.body.id;
     const user_id = req.body.user_id;
     const room_id = req.body.room_id;
     const first_name = req.body.first_name;
@@ -26,11 +25,16 @@ reservationRouter.post('/api/data/reservations/create', (req, res) => {
     const reservations_status = req.body.reservations_status;
     const time_slot = req.body.time_slot;
 
-    db.query("INSERT INTO reservations (id, user_id, room_id, first_name, last_name, reservations_status, time_slot) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [id, user_id, room_id, first_name, last_name, reservations_status, time_slot],
+    if (!user_id || !room_id || !first_name || !last_name || !reservations_status || !time_slot) {
+        return res.status(400).send("All fields are required");
+    }
+
+    db.query("INSERT INTO reservations (user_id, room_id, first_name, last_name, reservations_status, time_slot) VALUES (?, ?, ?, ?, ?, ?)",
+        [user_id, room_id, first_name, last_name, reservations_status, time_slot],
         (err, result) => {
             if (err) {
                 console.log(err);
+                res.status(500).send("Error inserting data");
             } else {
                 res.send("Values inserted");
             }
@@ -49,17 +53,25 @@ reservationRouter.put('/api/data/reservations/update', (req, res) => {
     const reservations_status = req.body.reservations_status;
     const time_slot = req.body.time_slot;
 
+    // ตรวจสอบว่ามีค่า user_id, room_id และ reservations_status ที่ไม่ใช่ null
+    if (!user_id || !room_id || !reservations_status) {
+        return res.status(400).send("User ID, Room ID, and Reservations Status are required");
+    }
+
+    // ทำการอัปเดตข้อมูลในฐานข้อมูล
     db.query("UPDATE reservations SET user_id = ?, room_id = ?, first_name = ?, last_name = ?, reservations_status = ?, time_slot = ? WHERE id = ?",
         [user_id, room_id, first_name, last_name, reservations_status, time_slot, id],
         (err, result) => {
             if (err) {
                 console.log(err);
+                res.status(500).send("Error updating data");
             } else {
-                res.send(result);
+                res.send("Values updated");
             }
         }
     );
 });
+
 
 reservationRouter.delete('/api/data/reservations/delete/:id', (req, res) => {
     const id = req.params.id;

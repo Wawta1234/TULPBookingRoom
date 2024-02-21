@@ -13,7 +13,7 @@ export default function CheckRoom2() {
     <Header/>
     <Menu />
     <WhiteRectangle>
-        <Room building={filterCriteria.building} date={filterCriteria.dateStart} floor={filterCriteria.floor}/> 
+        <Room building_id={filterCriteria.building_id}  floor={filterCriteria.floor} room_type={ filterCriteria.room_type}/> 
     </WhiteRectangle>
     </>
   )

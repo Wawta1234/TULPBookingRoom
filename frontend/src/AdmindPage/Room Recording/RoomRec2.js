@@ -25,7 +25,7 @@ export default function RoomRec2() {
       <WhiteRectangle>
         {/* Add a conditional check for filterCriteria */}
         {filterCriteria && (
-          <Room building={filterCriteria.building} floor={filterCriteria.floor} />
+          <Room building_id={filterCriteria.building_id} floor={filterCriteria.floor} capacity={filterCriteria.capacity} room_type={filterCriteria.room_type = 2}/>
         )}
         <button className="edit-btn" onClick={navigateToRoomRec}>
           แก้ไข

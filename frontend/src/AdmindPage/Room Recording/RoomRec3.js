@@ -12,7 +12,7 @@ export default function RoomRec3() {
   const [courseData, setCourseData] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/data/course")
+      .get("http://localhost:8080/api/data/subject/create")
       .then((response) => {
         setCourseData(response.data);
       })
@@ -79,12 +79,12 @@ export default function RoomRec3() {
       <Header />
       <AdminBar />
       <WhiteRectangle>
-        {courseData.map((course, index) => (
+        {/* {courseData.map((course, index) => (
           <div key={index}>
-        
+         */}
         <div className="content">
           <p>
-            <per>รายวิชา : {course.course_name}     อาจารย์ผู้สอน : {course.teacher}</per>
+            <per>รายวิชา :   อาจารย์ผู้สอน : </per>
             <pre>
               ครั้งที่ 1 : วันที่ xx.xx.xxxx     เวลา : xx : xx ห้อง : xxxx{" "}
               <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
@@ -149,8 +149,9 @@ export default function RoomRec3() {
               <button onClick={handleConfirm}>ตกลง </button>
             </pre>
           </p>
-        </div></div>
-        ))}
+        </div>
+        {/* </div> */}
+        {/* ))} */}
       </WhiteRectangle>
     </>
   );

@@ -6,9 +6,13 @@ import { useNavigate } from 'react-router-dom'
 
 export default function EditRoom() {
     const navigate = useNavigate();
+    // let dataSubject = "";
+
     const [filterCriteria, setFilterCriteria] = useState({
-      course_name : ""
+      subject : "",
+      
     });
+
     const handleFilterChange = (event) => {
       const { name, value } = event.target;
       setFilterCriteria({
@@ -18,7 +22,7 @@ export default function EditRoom() {
     };
   
     const navigateToEdit2 = () => {
-      navigate("/EditRoom/EditRoom2");
+      navigate("/EditRoom/EditRoom2",{state:filterCriteria});
     };
   return (
     <> 
@@ -26,9 +30,10 @@ export default function EditRoom() {
     <AdminBar  />
     <WhiteRectangle>
   <div className="EditRoom">
-    <label for="title">ระบุรายวิชาที่ต้องการแก้ไข</label>
+    <label for="title" >ระบุรายวิชาที่ต้องการแก้ไข</label>
     <span>&nbsp;&#42;</span>
-    <input type="text" name="course_name" onChange={handleFilterChange} />
+    <input type="text" name="subject" onChange={handleFilterChange} />
+    
     <button onClick={navigateToEdit2}>ตกลง</button>
     
   </div>

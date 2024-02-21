@@ -25,7 +25,7 @@ roomsRouter.get('/api/data/capacity', (req, res) => {
 
 roomsRouter.get('/api/data/rooms/building', (req, res) => {
     const condition = req.query.condition; // Get the condition from the query parameters
-    console.log()
+    //console.log()
     // SQL query to select buildings based on the condition
     const query = "SELECT * FROM rooms WHERE building = ?";
 
@@ -79,7 +79,7 @@ roomsRouter.get('/api/data/allRooms', (req, res) => {
 
 
 roomsRouter.get('/api/data/rooms', (req, res) => {
-    // console.log(req.query)
+//    console.log(req.query)
     db.query("SELECT * FROM rooms where  building = ? AND floors = ? ", [req.query.building, req.query.floor]  , (err, result) => {
         if (err) {
             console.log(err);
@@ -112,7 +112,7 @@ roomsRouter.post('/api/data/rooms/create', (req, res) => {
                 res.send("Values inserted");
             }
         }
-    )
+    ) 
 });
 
 roomsRouter.put('/api/data/rooms/update', (req, res) => {

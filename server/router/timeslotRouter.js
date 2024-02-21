@@ -14,47 +14,49 @@ timeslotRouter.get('/api/data/time' , (req, res) =>{
     });
 });
 
-timeslotRouter.post('/api/data/time/creat', (req, res) =>{
+timeslotRouter.post('/api/data/time/create', (req, res) =>{
     console.log("Request body:", req.body);
     
-    const time_slot_id = req.body.time_slot_id;
     const start_time = req.body.start_time;
     const end_time = req.body.end_time;
 
-    db.query("INSERT INTO time_slot (time_slot_id, start_time ,end_time) VALUES(?,?,?)",[time_slot_id, start_time,end_time],
-    (err,result) =>{
+    db.query("INSERT INTO time_slot (start_time, end_time) VALUES(?, ?)", [start_time, end_time], (err, result) =>{
         if(err){
             console.log(err);
+            res.status(500).send("Error inserting data");
         } else{
-            res.send("Valuse inserted");
+            res.send("Values inserted");
         }
-    }
-    )
-})
+    });
+});
+
 timeslotRouter.put('/api/data/time/update', (req,res) => {
     const time_slot_id = req.body.time_slot_id;
     const start_time = req.body.start_time;
     const end_time = req.body.end_time;
 
-   
-    db.query("UPDATE time_slot SET time_slot_id=?, start_time=?, end_timer=?",[time_slot_id,start_time ,end_time], (err, result) =>{
+    db.query("UPDATE time_slot SET start_time=?, end_time=? WHERE time_slot_id=?", [start_time, end_time, time_slot_id], (err, result) =>{
         if (err) {
             console.error(err);       
+            res.status(500).send("Error updating time slot");
         } else {
-            res.send(result);
+            res.send("Time slot updated successfully");
         } 
     });
-})
+});
+
 
 timeslotRouter.delete('/api/data/time/delete', (req, res) => {
-    const time_slot_id = req.params.time_slot_id;
-    db.query("DELETE FROM time_slot WHERE room_number = ?", [time_slot_id], (err, result) => {
+    const time_slot_id = req.body.time_slot_id;
+    db.query("DELETE FROM time_slot WHERE time_slot_id = ?", [time_slot_id], (err, result) => {
         if (err) {
             console.error(err);
+            res.status(500).send("Error deleting time slot");
         } else {
-            res.send(result);
+            res.send("Time slot deleted successfully");
         }
     });
 });
+
 
 module.exports = timeslotRouter;

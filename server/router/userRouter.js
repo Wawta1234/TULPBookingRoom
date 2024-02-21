@@ -19,7 +19,6 @@ userRouter.get('/api/data/user', (req, res) => {
 userRouter.post('/api/data/user/create', (req, res) => {
     console.log("Request body: ", req.body);
 
-    const id = req.body.id;
     const user_id = req.body.user_id;
     const frist_name = req.body.frist_name;
     const last_name = req.body.last_name;
@@ -27,17 +26,21 @@ userRouter.post('/api/data/user/create', (req, res) => {
     const password = req.body.password;
    
 
-    db.query("INSERT INTO user (id, user_id, frist_name, last_name, email, password) VALUES (?, ?, ?, ?, ?, ?, )",
-        [id, user_id, frist_name, last_name, email, password],
+    db.query("INSERT INTO user (user_id, frist_name, last_name, email, password) VALUES (?, ?, ?, ?, ?)",
+        [user_id, frist_name, last_name, email, password],
         (err, result) => {
             if (err) {
                 console.log(err);
+                res.status(500).send("Error inserting data");
             } else {
                 res.send("Values inserted");
             }
         }
     );
 });
+
+
+
 userRouter.post('/api/data/user/create', (req, res) => {
     console.log("Request body: ", req.body);
 

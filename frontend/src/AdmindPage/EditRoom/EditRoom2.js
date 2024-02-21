@@ -4,21 +4,45 @@ import Header from "../../component/Header";
 import AdminBar from "../../component/AdminBar";
 import WhiteRectangle from "../../component/WhiteRectangle";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 export default function EditRoom2() {
   const navigate = useNavigate();
-  const [courseData, setCourseData] = useState([]);
+  const location = useLocation();
+  const filterCriteria = location.state;
 
+  const [subjectData, setsubjectData] = useState([]);
+  const [teacherName , setTeacherName] = useState("");
+  // const [filterCriteria, setFilterCriteria] = useState({ subject: "" });
+ 
   useEffect(() => {
     axios
-      .get('http://localhost:8080/api/data/course')
+      .get("http://localhost:8080/api/data/subject", {
+        params: { subject: filterCriteria.subject},
+      })
       .then((response) => {
-        setCourseData(response.data);
+        console.log('data from subjec' ,response.data); 
+        setsubjectData(response.data);
+        let data = response.data[0].teacher_id;
+        console.log('data teacher id: ', data)
+
+        axios.get(`http://localhost:8080/api/data/teacher`,{
+          params : {id : filterCriteria.data}
+        })
+          .then(response => {
+            console.log('data teacher id: ', data)
+            console.log('data from teacher' ,response.data); 
+            setTeacherName(response.data.teacher_name);
+            // console.log(response.data.teacher_name); 
+          })
+          .catch(error => {
+            console.error('Error fetching building data:', error);
+          });
+
       })
       .catch((error) => {
-        console.error("Error fetching course data:", error);
+        console.error("Error fetching subject data:", error);
       });
   }, []);
 
@@ -78,12 +102,15 @@ export default function EditRoom2() {
       <AdminBar />
       <WhiteRectangle>
         <div className="EditRoom">
-          {courseData.map((course, index) => (
+          {subjectData.map((subject, index) => (
             <div key={index}>
               <h3>รายละเอียดห้องบรรยาย</h3>
               <h3>
                 {" "}
-                <pre> รายวิชา : {course.course_name}     ผู้สอน : {course.teacher} </pre>
+                <pre>
+                  {" "}
+                  รหัสวิชา : {subject.subject} รายวิชา : {subject.subject_name} ผู้สอน : {teacherName}{" "}
+                </pre>
               </h3>
               <br />
               <h4>

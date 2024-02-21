@@ -32,6 +32,7 @@ import HomeAdd from "./AdmindPage/AdmindTwo/Home";
 import AdmindReserTwo from "./AdmindPage/AdmindTwo/AdmindReserTwo";
 import CheckAvailability from "./UserPage/publicUser/check";
 import CheckAvailability2 from "./UserPage/publicUser/checkP2";
+import RoomData from "./AdmindPage/RecordRoomData/RoomData";
 
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
           <Route path="/AdmindReserTwo" element={<AdmindReserTwo/>} />
          <Route path="/checkRoomPublic" element ={<CheckAvailability/>} />
          <Route path="/checkRoomPublic/checkRoomPublic2" element ={<CheckAvailability2/>} />
+         <Route path="/RoomData" element ={<RoomData/>} />
          
         
         </Routes>

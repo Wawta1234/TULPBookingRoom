@@ -28,6 +28,11 @@ export default function AdminBar() {
           <i class="bi bi-building-check"></i>
             <a href="/AdminCheckRoom">ตรวจสอบสถานะห้องว่าง</a>
           </li>
+          <li>
+          <i class="bi bi-building-check"></i>
+            <a href="/Roomdata">บันทึกห้องบรรยาย</a>
+          </li>
+          
         </ul>
       </section>
   </div>

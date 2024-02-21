@@ -7,8 +7,11 @@ const Header = () => {
   const navigate = useNavigate();
   
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    navigate("/", { replace: true });
+    const confirmLogout = window.confirm("ต้องการออกจากระบบหรือไม่?");
+    if (confirmLogout) {
+      localStorage.removeItem("isLoggedIn");
+      navigate("/", { replace: true });
+    }
   };
   
   return (

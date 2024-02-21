@@ -9,7 +9,7 @@ export default function CheckRoom() {
     const [filterCriteria, setFilterCriteria] = useState({
       dateStart: "",
       dateEnd: "",
-      building: "",
+      building_id: "",
       capacity: "",
       floor: ""
     });
@@ -53,15 +53,15 @@ export default function CheckRoom() {
           <h2>กรุณากรอกข้อมูลให้ครบ</h2>
           <form action="" method="post">
           อาคาร :
-            <select name="building" onChange={handleFilterChange}>
+            <select name="building_id" onChange={handleFilterChange}>
               <option value="">-กรุณาเลือกอาคาร-</option>
-              <option value="อาคารบุญชูปณิธาน">อาคารบุญชูปณิธาน</option>
-              <option value="อาคารเรียนรวม 4 ชั้น">อาคารเรียนรวม 4 ชั้น</option>
-              <option value="อาคารเรียนรวม 5 ชั้น">อาคารเรียนรวม 5 ชั้น</option>
-              <option value="อาคารสิรินธรารัตน์">อาคารสิรินธรารัตน์</option>
-              <option value="อาคารนวัตกรรมบริการ">อาคารนวัตกรรมบริการ</option>
-              <option value="อาคารอเนกประสงค์และสนามกีฬาในร่ม">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
-              <option value="อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
+              <option value="1">อาคารบุญชูปณิธาน</option>
+              <option value="2">อาคารเรียนรวม 4 ชั้น</option>
+              <option value="3">อาคารเรียนรวม 5 ชั้น</option>
+              <option value="4">อาคารสิรินธรารัตน์</option>
+              <option value="5">อาคารนวัตกรรมบริการ</option>
+              <option value="6">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
+              <option value="7">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
             </select>
             <p>
             ชั้น :
@@ -84,10 +84,13 @@ export default function CheckRoom() {
               <input type="date" name="dateStart" onChange={handleFilterChange} />
             </form>
             <p>
-            <input type="radio" name="room" id="meeting-room" value="meeting" />{" "}
-              ห้องประชุม
-              <input type="radio" name="room" id="class-room" value="class" />
-              ห้องบรรยาย
+              ประเภทห้อง :
+              <select name="room_type" onChange={handleFilterChange}>
+              <option value="">-กรุณาเลือกประเภทห้อง-</option>
+              <option value="1"> ห้องประชุม</option>
+              <option value="2">ห้องเรียน</option>
+
+            </select>
             </p>
             <button onClick={ navigateToCheckRoom2}>ตกลง </button> 
           </form>
