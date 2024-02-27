@@ -16,8 +16,12 @@ export default function RoomData() {
   const [equipment_name, setEquipmentName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [roomsList, setroomList] = useState([]);
-  const [newEquipment_name, setNewEquipment_name] = useState("");
+  // const [newEquipmentName, setNewEquipmentName] = useState("");
+  
   const [newQuantity, setNewQuantity] = useState("");
+  const [newEquipmentList, setNewEquipmentList] = useState([
+    { equipment_name: "", quantity: "" },
+  ]);
 
   const getRoomData = () => {
     Axios.get("http://localhost:8080/api/data/roomAll").then((response) => {
@@ -67,17 +71,16 @@ export default function RoomData() {
   };
 
   const updateRoomData = (val) => {
-    // ตรวจสอบว่าอ็อบเจ็กต์ val มีค่าหรือไม่
-    console.log("val is : " , val);
     if (val && val.room_id) {
-      Axios.put("http://localhost:8080/api/data/equipment/update", {
-        room_id: val.room_id,
-        equipment_name: val.equipment_name,
-        quantity: newQuantity,
-      })
+      Axios.put(
+        `http://localhost:8080/api/data/equipment/update/${val.room_id}`,
+        {
+          equipment_name: val.equipment_name,
+          quantity: newQuantity,
+        }
+      )
         .then((response) => {
-          console.log("newQuantity is : ", newQuantity);
-          // อัปเดตข้อมูลใน roomList หลังจากที่ได้รับการอัปเดตจากเซิร์ฟเวอร์
+          console.log("Updated successfully");
           setroomList((prevRoomsList) =>
             prevRoomsList.map((room) =>
               room.room_id === val.room_id
@@ -92,8 +95,6 @@ export default function RoomData() {
         });
     } else {
       console.error("Missing room_id in the object:", val);
-      console.log("newQuantity is " + newQuantity);
-      console.log(55555);
     }
   };
 
@@ -115,6 +116,10 @@ export default function RoomData() {
 
   const handleConfirm = () => {
     setSuccessPopup(false); // ปิดป๊อปอัพเมื่อคลิกตกลง
+  };
+
+  const handleAddEquipment = () => {
+    setNewEquipmentList([...newEquipmentList, { equipment_name: "", quantity: "" }]);
   };
 
   return (
@@ -216,12 +221,18 @@ export default function RoomData() {
               <label htmlFor="equipment_name" className="form-label">
                 ชื่ออุปกรณ์:
               </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="ระบุชื่ออุปกรณ์"
-                onChange={(event) => setEquipmentName(event.target.value)}
-              />
+              <select
+                className="form-select"
+                onChange={(event) => {
+                  setEquipmentName(event.target.value);
+                }}
+              >
+                <option value="">-กรุณาเลือกประเภทอุปกรณ์-</option>
+                <option value="computer">computer</option>
+                <option value="visualizer">visualizer</option>
+                <option value="Projector">Projector</option>
+                <option value="microphone">microphone</option>
+              </select>
             </div>
 
             <div className="mb-3">
@@ -257,8 +268,8 @@ export default function RoomData() {
                 <div className="card-body text-left">
                   <pre>
                     <p className="card-text">
-                    รหัสห้อง: {val.room_id}
-                     เลขห้อง : {val.room_number} จำนวนที่นั่ง: {val.capacity}
+                      รหัสห้อง: {val.room_id}
+                      เลขห้อง : {val.room_number} จำนวนที่นั่ง: {val.capacity}
                     </p>
                     <p className="card-text">
                       อาคาร : {val.building_name} ชั้น : {val.floor}
