@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 import Header from "../../component/Header";
 import AdminBar from "../../component/AdminBar";
 import WhiteRectangle from "../../component/WhiteRectangle";
 
 export default function RoomData() {
+  const navigate = useNavigate();
   const [room_number, setRoomNumber] = useState("");
   const [building_id, setbuilding_id] = useState("");
   const [floor, setFloor] = useState("");
@@ -17,11 +20,22 @@ export default function RoomData() {
   const [quantity, setQuantity] = useState("");
   const [roomsList, setroomList] = useState([]);
   // const [newEquipmentName, setNewEquipmentName] = useState("");
-  
+
   const [newQuantity, setNewQuantity] = useState("");
   const [newEquipmentList, setNewEquipmentList] = useState([
     { equipment_name: "", quantity: "" },
   ]);
+
+  // const handleConfirm = (e) => {
+  //   e.preventDefault();
+  //   Swal.fire({
+  //     title: "บันทึกข้อมูลห้องบรรยายเรียบร้อยแล้ว",
+  //     icon: "success",
+  //     confirmButtonText: "OK",
+  //   }).then(() => {
+  //     navigate("/AdmindPage/RecordRoomData/RoomData");
+  //   });
+  // };
 
   const getRoomData = () => {
     Axios.get("http://localhost:8080/api/data/roomAll").then((response) => {
@@ -63,7 +77,7 @@ export default function RoomData() {
           },
         ]);
         console.log(response.data);
-        setSuccessPopup(true);
+        // handleConfirm(); // เรียกใช้ handleConfirm ที่นี่โดยตรง
       })
       .catch((error) => {
         console.error("Error adding room:", error);
@@ -114,12 +128,45 @@ export default function RoomData() {
       });
   };
 
-  const handleConfirm = () => {
-    setSuccessPopup(false); // ปิดป๊อปอัพเมื่อคลิกตกลง
+  const handleAddEquipment = () => {
+    setNewEquipmentList([
+      ...newEquipmentList,
+      { equipment_name: "", quantity: "" },
+    ]);
   };
 
-  const handleAddEquipment = () => {
-    setNewEquipmentList([...newEquipmentList, { equipment_name: "", quantity: "" }]);
+  const handleEquipmentNameChange = (roomId, equipmentIndex, newName) => {
+    setroomList((prevRoomsList) =>
+      prevRoomsList.map((room) =>
+        room.room_id === roomId
+          ? {
+              ...room,
+              equipment: room.equipment.map((equipment, index) =>
+                index === equipmentIndex
+                  ? { ...equipment, equipment_name: newName }
+                  : equipment
+              ),
+            }
+          : room
+      )
+    );
+  };
+
+  const handleQuantityChange = (roomId, equipmentIndex, newQuantity) => {
+    setroomList((prevRoomsList) =>
+      prevRoomsList.map((room) =>
+        room.room_id === roomId
+          ? {
+              ...room,
+              equipment: room.equipment.map((equipment, index) =>
+                index === equipmentIndex
+                  ? { ...equipment, quantity: newQuantity }
+                  : equipment
+              ),
+            }
+          : room
+      )
+    );
   };
 
   return (
@@ -144,7 +191,7 @@ export default function RoomData() {
                 <option value="1">อาคารบุญชูปณิธาน</option>
                 <option value="2">อาคารเรียนรวม 4 ชั้น</option>
                 <option value="3">อาคารเรียนรวม 5 ชั้น</option>
-                <option value="4">อาคารสิรินธรารัตน์</option>
+                <option value="5">อาคารสิรินธรารัตน์</option>
                 <option value="5">อาคารนวัตกรรมบริการ</option>
                 <option value="6">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
                 <select value="7">
@@ -247,9 +294,61 @@ export default function RoomData() {
               />
             </div>
           </form>
-          <button type="button" className="btn btn-warning">
+          {newEquipmentList.map((equipment, index) => (
+            <div key={index}>
+              <div className="mb-3">
+                <label
+                  htmlFor={`equipment_name_${index}`}
+                  className="form-label"
+                >
+                  ชื่ออุปกรณ์:
+                </label>
+                <select
+                  id={`equipment_name_${index}`}
+                  className="form-select"
+                  value={equipment.equipment_name}
+                  onChange={(event) => {
+                    const updatedEquipmentList = [...newEquipmentList];
+                    updatedEquipmentList[index].equipment_name =
+                      event.target.value;
+                    setNewEquipmentList(updatedEquipmentList);
+                  }}
+                >
+                  <option value="">-กรุณาเลือกประเภทอุปกรณ์-</option>
+                  <option value="computer">computer</option>
+                  <option value="visualizer">visualizer</option>
+                  <option value="Projector">Projector</option>
+                  <option value="microphone">microphone</option>
+                </select>
+              </div>
+              <div className="mb-3">
+                <label htmlFor={`quantity_${index}`} className="form-label">
+                  จำนวน:
+                </label>
+                <input
+                  type="text"
+                  id={`quantity_${index}`}
+                  className="form-control"
+                  placeholder="ระบุจำนวนอุปกรณ์"
+                  value={equipment.quantity}
+                  onChange={(event) => {
+                    const updatedEquipmentList = [...newEquipmentList];
+                    updatedEquipmentList[index].quantity = event.target.value;
+                    setNewEquipmentList(updatedEquipmentList);
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+
+          <button
+            type="button"
+            className="btn btn-warning"
+            onClick={handleAddEquipment}
+          >
             เพิ่มอุปกรณ์
           </button>
+
           <button
             type="button"
             className="btn btn-primary"
@@ -310,18 +409,6 @@ export default function RoomData() {
               </div>
             );
           })}
-
-          {successPopup && (
-            <div className="alert alert-success" role="alert">
-              บันทึกข้อมูลสำเร็จ
-              <button
-                type="button"
-                className="btn-close"
-                aria-label="Close"
-                onClick={handleConfirm}
-              ></button>
-            </div>
-          )}
         </div>
       </WhiteRectangle>
     </>
