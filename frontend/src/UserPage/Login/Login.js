@@ -17,44 +17,93 @@ function Login() {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    var myHeaders = new Headers();
+  
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append(
       "Application-Key",
       "TU6478d2951a9e13ddaa28a71bf622de5d953fad6f99503e0af27027c102f87495a41902ada4cb77b1690ee34580e84af7"
     );
     myHeaders.append("Cookie", "ci_session=e3gcv672rfcqngh45vmvm0stj8u9hu3n");
-
-    var raw = JSON.stringify({
+  
+    const raw = JSON.stringify({
       UserName: inputs.username,
       PassWord: inputs.password,
     });
-
-    var requestOptions = {
+  
+    const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
-
-    fetch("https://restapi.tu.ac.th/api/v1/auth/Ad/verify", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        if (result.status === false) {
-          MySwal.fire({
-            icon: "error",
-          });
-        } else {
-          navigate("/Home", { state: { user: inputs.username } });
+  
+    try {
+      const response = await fetch(
+        "https://restapi.tu.ac.th/api/v1/auth/Ad/verify",
+        requestOptions
+      );
+      const result = await response.json();
+      console.log(result);
+  
+      if (result.status === false) {
+        MySwal.fire({
+          icon: "error",
+        });
+      } else {
+        // ตรวจสอบว่าผู้ใช้นี้มีในฐานข้อมูลหรือไม่
+        const userExists = await checkUserExists(inputs.username);
+        if (!userExists) {
+          // ส่งข้อมูลผู้ใช้ไปเก็บในฐานข้อมูล
+          const userData = {
+            username: inputs.username,
+            password: inputs.password,
+            displayname_th: result.displayname_th,
+            email: result.email,
+            
+          };
+          await storeUserData(userData);
         }
-      })
-      .catch((error) => console.log("error", error));
+  
+        navigate("/Home", { state: { user: inputs.username } });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
-
+  
+  // ฟังก์ชันตรวจสอบว่าผู้ใช้นี้มีอยู่ในฐานข้อมูลหรือไม่
+  const checkUserExists = async (username) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/data/user?username=${username}`);
+      const data = await response.json();
+      return data.exists;
+    } catch (error) {
+      console.error("Error checking user existence:", error);
+      return false;
+    }
+  };
+  
+  // ฟังก์ชันเพื่อเก็บข้อมูลผู้ใช้ในฐานข้อมูล
+  const storeUserData = async (userData) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/data/user/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+      if (!response.ok) {
+        console.error("Failed to store user data");
+      }
+    } catch (error) {
+      console.error("Error storing user data:", error);
+    }
+  };
+  
   return (
     <div className="background-image">
       <div className="container">
