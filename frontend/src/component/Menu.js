@@ -1,7 +1,7 @@
 import React from "react";
 import "./Menu.css"
 
-export default function Menu() {
+export default function Menu(userData) {
   return (
     <div className="menubar">
    
@@ -14,7 +14,7 @@ export default function Menu() {
         <ul>
           <li>
             <i class="bi bi-journal-plus" />
-            <a href="/booking">จองห้อง</a>
+            <a href="/booking" usta>จองห้อง</a>
           </li>
           <li>
             <i class="bi bi-bookmark-check"></i>

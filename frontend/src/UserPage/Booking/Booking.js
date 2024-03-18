@@ -8,9 +8,8 @@ import "./Booking.css";
 
 export default function Booking() {
   const [filterCriteria, setFilterCriteria] = useState({
-    // dateStart: "",
-    // dateEnd: "",
-
+    dateStart: "",
+    dateEnd: "",
     building_id: "",
     capacity: "",
     floor: "",
@@ -68,10 +67,10 @@ export default function Booking() {
               <option value="1">อาคารบุญชูปณิธาน</option>
               <option value="2">อาคารเรียนรวม 4 ชั้น</option>
               <option value="3">อาคารเรียนรวม 5 ชั้น</option>
-              <option value="4">อาคารสิรินธรารัตน์</option>
-              <option value="5">อาคารนวัตกรรมบริการ</option>
-              <option value="6">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
-              <option value="7">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
+              <option value="5">อาคารสิรินธรารัตน์</option>
+              <option value="6">อาคารนวัตกรรมบริการ</option>
+              <option value="7">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
+              <option value="8">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
             </select>
             <p>
             ชั้น :
@@ -89,11 +88,11 @@ export default function Booking() {
               <input type="text" name="capacity" onChange={handleFilterChange} />
             </p>
             <p>
-              ประเภทห้อง
+              ประเภทห้อง 
               <select name="room_type" onChange={handleFilterChange}>
               <option value="">-กรุณาเลือกประเภทห้อง-</option>
-              <option value="1"> ห้องประชุม</option>
-              <option value="2">ห้องเรียน</option>
+              <option value="1">ห้องเรียน </option>
+              <option value="2">ห้องประชุม</option>
 
             </select>
             </p>

@@ -20,10 +20,7 @@ equipmentRouter.post('/api/data/equipment/creat' , (req, res) =>{
     const room_id = req.body.room_id;
     const equipment_name = req.body.equipment_name;
     const quantity = req.body.quantity;
-    // if ( !room_id) {
-    //     return res.status(400).send("ID and building name are required");
-    // }
-
+    
     db.query("INSERT INTO equipment (equipment_name, quantity, room_id) VALUES (?, ?, ?)", [room_id, equipment_name, quantity], (err, result) => {
         if(err) {
             console.log(err);
@@ -35,24 +32,32 @@ equipmentRouter.post('/api/data/equipment/creat' , (req, res) =>{
 })
 
 
-equipmentRouter.put('/api/data/equipment/update' , (req, res) =>{
+equipmentRouter.put('/api/data/equipment/update/:room_id', (req, res) =>{
     console.log("Request body:", req.body);
-    const id = req.body.id;
-    const room_id = req.body.room_id;
-    const equipment_name = req.body.equipment_name;
-    const quantity = req.body.quantity;
+    
+    const { equipment_name, quantity } = req.body;
+    const room_id = req.params.room_id;
 
-    db.query("UPDATE equipment SET room_id = ?, equipment_name = ?, quantity = ? WHERE id = ?", [room_id, equipment_name, quantity, id], (err, result) =>{
-        if(err){
-            console.log(err);
-        } else{
-            res.send("Values updated");
-        }
+    const sqlQuery = `UPDATE equipment 
+                      SET equipment_name = ?, quantity = ? 
+                      WHERE room_id = ?`;
+  
+    db.query(sqlQuery, [equipment_name, quantity, room_id], (err, result) => {
+      if (err) {
+        console.error('Error updating equipment:', err);
+        res.status(500).send('Internal server error');
+        return;
+      }
+  
+      console.log('Equipment updated successfully');
+      res.status(200).send('Equipment updated successfully');
     });
-});
+  });
+
+  
 
 
-equipmentRouter.delete('/api/data/equipment/delete/:id', (req, res) => {
+equipmentRouter.delete('/api/data/equipment/delete/:room_id', (req, res) => {
     const id = req.params.id; // เปลี่ยนจาก req.params.room_id เป็น req.params.id เนื่องจากเรากำลังใช้ id ของอุปกรณ์
     db.query("DELETE FROM equipment WHERE id = ?", [id], (err, result) => { // เปลี่ยนจาก rooms เป็น equipment เนื่องจากตารางที่ต้องการลบข้อมูลคือ equipment
         if (err) {

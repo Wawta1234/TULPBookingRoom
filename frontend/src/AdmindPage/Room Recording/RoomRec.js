@@ -12,7 +12,7 @@ export default function RoomRec() {
     teacher: "",
     std_num: "",
     section: "",
-    building: "",
+    building_id: "",
     floor: "",
     
     //เหลือเรื่องวันที่

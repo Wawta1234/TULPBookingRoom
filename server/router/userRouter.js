@@ -6,38 +6,55 @@ const userRouter = router
 
 
 userRouter.get('/api/data/user', (req, res) => {
-    db.query("SELECT * FROM user", (err, result) => {
+    // const username = req.query.username; // รับชื่อผู้ใช้งานจากพารามิเตอร์ของคำขอ
+    db.query("SELECT * FROM user ", (err, result) => {
         if (err) {
             console.log(err);
-        } else {
+          } else {
             res.send(result);
-        }
-    });
+          }
+        });
 });
 
 
 userRouter.post('/api/data/user/create', (req, res) => {
     console.log("Request body: ", req.body);
 
-    const user_id = req.body.user_id;
-    const frist_name = req.body.frist_name;
-    const last_name = req.body.last_name;
+    const username = req.body.username;
+    const displayname_th = req.body.displayname_th;
     const email = req.body.email;
     const password = req.body.password;
-   
+    const department = req.body.department;
 
-    db.query("INSERT INTO user (user_id, frist_name, last_name, email, password) VALUES (?, ?, ?, ?, ?)",
-        [user_id, frist_name, last_name, email, password],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).send("Error inserting data");
-            } else {
-                res.send("Values inserted");
-            }
+    // ตรวจสอบว่ามีผู้ใช้งานอยู่ในฐานข้อมูลหรือไม่
+    db.query("SELECT * FROM user WHERE username = ?", [username], (err, rows) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Error checking user existence");
+            return;
         }
-    );
+
+        // ถ้ามีผู้ใช้งานอยู่แล้วในฐานข้อมูล
+        if (rows.length > 0) {
+            res.status(400).send("User already exists");
+            return;
+        }
+
+        // หากไม่มีผู้ใช้งานอยู่ในฐานข้อมูล ให้ทำการเพิ่มข้อมูลผู้ใช้
+        db.query("INSERT INTO user (username, displayname_th, email, password , department ) VALUES (?, ?, ?, ?, ?)",
+            [username, displayname_th, email, password, department],
+            (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send("Error inserting data");
+                } else {
+                    res.send("Values inserted");
+                }
+            }
+        );
+    });
 });
+
 
 
 
@@ -45,15 +62,15 @@ userRouter.post('/api/data/user/create', (req, res) => {
     console.log("Request body: ", req.body);
 
     const id = req.body.id;
-    const user_id = req.body.user_id;
-    const frist_name = req.body.frist_name;
-    const last_name = req.body.last_name;
+    const username = req.body.username;
+    const displayname_th = req.body.displayname_th;
     const email = req.body.email;
     const password = req.body.password;
+    const department = req.body.department;
    
 
-    db.query("INSERT INTO user (id, user_id, frist_name, last_name, email, password) VALUES (?, ?, ?, ?, ?, ?)",
-        [id, user_id, frist_name, last_name, email, password],
+    db.query("INSERT INTO user (id, username, displayname_th, email, password ,department) VALUES ( ?, ?, ?, ?, ? , ?)",
+        [id, username, displayname_th, email, password, department],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -68,15 +85,14 @@ userRouter.put('/api/data/user/update', (req, res) => {
     console.log("Request body: ", req.body);
 
     const id = req.body.id;
-    const user_id = req.body.user_id;
-    const frist_name = req.body.frist_name;
-    const last_name = req.body.last_name;
+    const username = req.body.username;
+    const displayname_th = req.body.displayname_th;
     const email = req.body.email;
     const password = req.body.password;
-    
+    const department = req.body.department;
 
-    db.query("UPDATE user SET user_id = ?, frist_name = ?, last_name = ?, email = ?, password = ?  WHERE id = ?",
-        [id, user_id, frist_name, last_name, email, password],
+    db.query("UPDATE user SET username = ?, displayname_th = ?, email = ?, password = ? ,department = ?, WHERE id = ?",
+        [id, username, displayname_th, email, password, department],
         (err, result) => {
             if (err) {
                 console.log(err);

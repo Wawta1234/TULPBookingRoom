@@ -30,7 +30,7 @@ export default function AdminBar() {
           </li>
           <li>
           <i class="bi bi-building-check"></i>
-            <a href="/Roomdata">บันทึกห้องบรรยาย</a>
+            <a href="/Roomdata">บันทึกห้อง</a>
           </li>
           
         </ul>

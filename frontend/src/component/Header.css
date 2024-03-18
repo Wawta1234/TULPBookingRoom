@@ -1,19 +1,29 @@
-/* Header.css */
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: rgb(238, 237, 237);
-    /* border-bottom: 1px solid #000000; เส้นขอบดำ หากต้องการ */
-  }
-  
-  .header i {
-    font-size: 50px;
-    color: #000000; /* สีไอคอน */
-  }
-  
-  .header h1 {
-    color: #c3002f; /* สีข้อความ */
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(238, 237, 237);
+}
+
+.header div {
+  display: flex;
+  align-items: center;
+}
+
+.header a {
+  margin-left: 10px; /* เพิ่มระยะห่างระหว่างลิงก์ "ออกจากระบบ" กับชื่อผู้ใช้ */
+}
+
+.header i {
+  font-size: 50px;
+  color: #000000;
+}
+
+.header h1 {
+  color: #c3002f;
+}
+
+.header p {
+  margin-right: 10px; /* เพิ่มระยะห่างขวาสุดของชื่อผู้ใช้ */
+}

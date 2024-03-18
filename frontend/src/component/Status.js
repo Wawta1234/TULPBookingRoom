@@ -1,38 +1,67 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Status() {
   const [reservations, setReservations] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [filterStatus, setFilterStatus] = useState(null);
+  const location = useLocation();
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/data/reservations")
-      .then((response) => {
-        setReservations(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching reservations data:", error);
-      });
+    const userDataFromStorage = localStorage.getItem("userData");
 
-    axios.get("http://localhost:8080/api/data/allRooms")
-      .then((response) => {
-        setRooms(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching rooms data:", error);
-      });
+    console.log("userData B3 :", userDataFromStorage);
+    if (userDataFromStorage) {
+      setUserData(JSON.parse(userDataFromStorage));
+    }
   }, []);
+
+  console.log("userData reservation in status  is:", userData);
+
+  useEffect(() => {
+    if (userData && userData.username) {
+      // ตรวจสอบว่า userData ไม่เป็น null และมีค่า username
+      axios
+        .get("http://localhost:8080/api/data/reservations" , {
+          params: {
+            username: userData.username // ส่ง username ของผู้ใช้ที่ล็อกอินไปยังเซิร์ฟเวอร์
+        }})
+        .then((response) => {
+          setReservations(response.data);
+          console.log("ข้อมูลที่ได้ ", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching reservations data:", error);
+        });
+
+      axios
+        .get("http://localhost:8080/api/data/allRooms")
+        .then((response) => {
+          setRooms(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching rooms data:", error);
+        });
+    }
+  }, [userData && userData.username]);
+  console.log(
+    "usename Data in status is:",
+    userData ? userData.username : "userData is null"
+  );
 
   const filterReservationsByStatus = (status) => {
     setFilterStatus(status);
   };
-  
 
   return (
-    
     <div className="status">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      />
       <style>
         {`
           .status-bar {
@@ -62,7 +91,7 @@ export default function Status() {
       <StatusBar onFilterChange={filterReservationsByStatus} />
       {reservations
         .filter((reservation) =>
-          filterStatus === null ? true : reservation.reservations_status === filterStatus
+          filterStatus === null ? true : reservation.approve === filterStatus
         )
         .map((reservation) => {
           const room = rooms.find((room) => room.id === reservation.room_id);
@@ -70,26 +99,29 @@ export default function Status() {
             <div key={reservation.id} className="item">
               <i className="bi bi-calendar-check"></i>
               <p>
-                วันที่ :{" "}
-                {new Date(reservation.date).toLocaleDateString()} เวลา :{" "}
-                {reservation.time_slot_id === 1
-                  ? "09:30 - 12:30"
-                  : reservation.time_slot_id === 2
-                  ? "13:30 - 16:30"
-                  : reservation.time_slot_id === 3
-                  ? "17:00 - 20:00"
-                  : "ไม่ระบุเวลา"}
-                <br />
-                ห้อง :{room ? room.room_number : "ไม่พบข้อมูล"} ชั้น :{room ? room.floors : "ไม่พบข้อมูล"} อาคาร :
-                {room ? room.building : "ไม่พบข้อมูล"}
-                <br/>สถานะคำขอ :
-                {reservation.reservations_status	 === 1
-                  ? "อนุมัติ"
-                  : reservation.reservations_status	 === 2
-                  ? "รออนุมัติ"
-                  : reservation.reservations_status	=== 0
-                  ? "ไม่อนุมัติ"
-                  : "ไม่ระบุ"} 
+                <pre>
+                  วันที่ :{" "}
+                  {new Date(reservation.date_reser).toLocaleDateString()} เวลา :{" "}
+                  {reservation.time_slot_id === 1
+                    ? "09:30 - 12:30"
+                    : reservation.time_slot_id === 2
+                    ? "13:30 - 16:30"
+                    : reservation.time_slot_id === 3
+                    ? "17:00 - 20:00"
+                    : "ไม่ระบุเวลา"}
+                  <br />
+                  ห้อง : {reservation.room_number} ชั้น : {reservation.floor}{" "}
+                  อาคาร : {reservation.building_name}
+                  <br />
+                  สถานะคำขอ :{" "}
+                  {reservation.approve === 1
+                    ? "อนุมัติ"
+                    : reservation.approve === 2
+                    ? "รออนุมัติ"
+                    : reservation.approve === 0
+                    ? "ไม่อนุมัติ"
+                    : "ไม่ระบุ"}{" "}
+                </pre>
               </p>
             </div>
           );

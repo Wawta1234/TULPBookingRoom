@@ -3,36 +3,85 @@ const router = express.Router();
 const db = require('../connect'); // Correct the import statement
 const roomAddRouter = router;
 
-// roomAddRouter .get('/api/data/roomForAdd' , (req, res) =>{
-//     db.query("SELECT * FROM room", (err, result) =>{
-//         if(err){
-//             console.log(err);
-//         }else{
-//             res.send(result);
-//         }
-//     });
-// });
-
-roomAddRouter.post('/api/data/roomForAdd/create' , (req, res) =>{
-    console.log("Request body:", req.body);
+roomAddRouter .get('/api/data/roomAll' , (req, res) =>{
     
-    // const id = req.body.id;
-    const room_number = req.body.room_number;
-    const building_id = req.body.building_id;
-    const floor = req.body.floor;
-    const capacity = req.body.capacity;
-    const room_type = req.body.room_type;
-
-    db.query("INSERT INTO room (room_number, building_id,floor, capacity, room_type) VALUES(?,?,?,?,?)",[room_number, building_id,floor, capacity, room_type],
-    (err,result) =>{
+    db.query("SELECT room.*, equipment.equipment_name ,  equipment.room_id ,  equipment.quantity, building.building_name FROM room INNER JOIN equipment on room.id = equipment.room_id inner join building on room.building_id = building.id;", (err, result) =>{
         if(err){
             console.log(err);
-        } else{
-            res.send("Valuse inserted");
+        }else{
+            res.send(result);
         }
-    }
-    )
-})
+    });
+//    console.log("Request body in get data:", req.body);
+});
+
+// roomAddRouter.post('/api/data/roomForAdd/create' , (req, res) =>{
+//     console.log("Request body:", req.body);
+    
+//     // const id = req.body.id;
+//     const room_number = req.body.room_number;
+//     const building_id = req.body.building_id;
+//     const floor = req.body.floor;
+//     const capacity = req.body.capacity;
+//     const room_type = req.body.room_type;
+
+//     db.query("INSERT INTO room (room_number, building_id,floor, capacity, room_type) VALUES(?,?,?,?,?)",[room_number, building_id,floor, capacity, room_type],
+//     (err,result) =>{
+//         if(err){
+//             console.log(err);
+//         } else{
+//             res.send("Valuse inserted");
+//         }
+//     }
+//     )
+// })
+
+roomAddRouter.post('/api/data/roomForAdd/create', (req, res) => {
+    console.log("Request body is:", req.body);
+    
+    const { room_number, building_id, floor, capacity, room_type, equipmentList } = req.body;
+
+    db.beginTransaction(err => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error starting transaction');
+        }
+
+        db.query("INSERT INTO room (room_number, building_id, floor, capacity, room_type) VALUES (?, ?, ?, ?, ?)", [room_number, building_id, floor, capacity, room_type], (err, roomResult) => {
+            if (err || !roomResult) {
+                db.rollback(() => {
+                    console.error(err || 'Room insertion failed');
+                    return res.status(500).send(err || 'Room insertion failed');
+                });
+            } else {
+                const room_id = roomResult.insertId;
+
+                equipmentList.forEach((equipment) => {
+                    db.query("INSERT INTO equipment (equipment_name, quantity, room_id) VALUES (?, ?, ?)", [equipment.equipment_name, equipment.quantity, room_id], (err, equipmentResult) => {
+                        if (err) {
+                            db.rollback(() => {
+                                console.error(err);
+                                return res.status(500).send('Error inserting data into equipment table');
+                            });
+                        }
+                    });
+                });
+
+                db.commit(err => {
+                    if (err) {
+                        db.rollback(() => {
+                            console.error(err);
+                            return res.status(500).send('Error committing transaction');
+                        });
+                    }
+                    console.log('Transaction successfully committed');
+                    res.send('Data inserted successfully');
+                });
+            }
+        });
+    });
+});
+
 
 
 roomAddRouter.put('/api/data/roomForAdd/update', (req, res) => {
@@ -54,16 +103,29 @@ roomAddRouter.put('/api/data/roomForAdd/update', (req, res) => {
 });
 
 
-roomAddRouter.delete('/api/data/roomForAdd/delete/:id', (req, res) => {
-    const id = req.params.id; // ใช้ id แทน room_number
-    db.query("DELETE FROM rooms WHERE id = ?", [id], (err, result) => {
+roomAddRouter.delete('/api/data/roomForAdd/delete/:room_id', (req, res) => {
+    const room_id = req.params.room_id;
+    console.log("Delete room with room_id:", room_id);
+    
+    db.query("DELETE FROM equipment WHERE room_id = ?", [room_id], (err, result) => {
         if (err) {
             console.error(err);
+            res.status(500).send("เกิดข้อผิดพลาดในการลบข้อมูลอุปกรณ์ภายในห้อง");
         } else {
-            res.send(result);
+            
+            db.query("DELETE FROM room WHERE id = ? ", [room_id], (err, result) => {
+                // console.log("id is :", id);
+                if (err) {
+                    console.error(err);
+                    res.status(500).send("เกิดข้อผิดพลาดในการลบห้อง");
+                } else {
+                    res.send("ลบห้องและข้อมูลอุปกรณ์ภายในห้องเรียบร้อยแล้ว");
+                }
+            });
         }
     });
 });
+
 
 roomAddRouter.get('/api/data/roomForAdd', (req, res) => {
     

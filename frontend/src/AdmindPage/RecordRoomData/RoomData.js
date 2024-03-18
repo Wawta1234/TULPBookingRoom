@@ -26,6 +26,8 @@ export default function RoomData() {
     { equipment_name: "", quantity: "" },
   ]);
 
+  const [showNewEquipment, setShowNewEquipment] = useState(false);
+
   // const handleConfirm = (e) => {
   //   e.preventDefault();
   //   Swal.fire({
@@ -52,9 +54,10 @@ export default function RoomData() {
         floor: floor,
         capacity: capacity,
         room_type: room_type,
-        equipment_name: equipment_name,
-        quantity: quantity,
+        // equipment_name: equipment_name,
+        // quantity: quantity,
         room_id: room_id,
+        equipmentList: newEquipmentList,
       },
       {
         headers: {
@@ -74,9 +77,10 @@ export default function RoomData() {
             equipment_name: equipment_name,
             quantity: quantity,
             room_id: room_id,
+            equipmentList: newEquipmentList,
           },
         ]);
-        console.log(response.data);
+        console.log("data post is : ",response.data);
         // handleConfirm(); // เรียกใช้ handleConfirm ที่นี่โดยตรง
       })
       .catch((error) => {
@@ -192,9 +196,9 @@ export default function RoomData() {
                 <option value="2">อาคารเรียนรวม 4 ชั้น</option>
                 <option value="3">อาคารเรียนรวม 5 ชั้น</option>
                 <option value="5">อาคารสิรินธรารัตน์</option>
-                <option value="5">อาคารนวัตกรรมบริการ</option>
-                <option value="6">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
-                <select value="7">
+                <option value="6">อาคารนวัตกรรมบริการ</option>
+                <option value="7">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
+                <select value="8">
                   อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม
                 </select>
               </select>
@@ -264,7 +268,7 @@ export default function RoomData() {
               ></input>
             </div>
 
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <label htmlFor="equipment_name" className="form-label">
                 ชื่ออุปกรณ์:
               </label>
@@ -292,52 +296,45 @@ export default function RoomData() {
                 placeholder="ระบุจำนวนอุปกรณ์"
                 onChange={(event) => setQuantity(event.target.value)}
               />
-            </div>
+            </div> */}
           </form>
+
           {newEquipmentList.map((equipment, index) => (
-            <div key={index}>
-              <div className="mb-3">
-                <label
-                  htmlFor={`equipment_name_${index}`}
-                  className="form-label"
-                >
-                  ชื่ออุปกรณ์:
-                </label>
-                <select
-                  id={`equipment_name_${index}`}
-                  className="form-select"
-                  value={equipment.equipment_name}
-                  onChange={(event) => {
-                    const updatedEquipmentList = [...newEquipmentList];
-                    updatedEquipmentList[index].equipment_name =
-                      event.target.value;
-                    setNewEquipmentList(updatedEquipmentList);
-                  }}
-                >
-                  <option value="">-กรุณาเลือกประเภทอุปกรณ์-</option>
-                  <option value="computer">computer</option>
-                  <option value="visualizer">visualizer</option>
-                  <option value="Projector">Projector</option>
-                  <option value="microphone">microphone</option>
-                </select>
-              </div>
-              <div className="mb-3">
-                <label htmlFor={`quantity_${index}`} className="form-label">
-                  จำนวน:
-                </label>
-                <input
-                  type="text"
-                  id={`quantity_${index}`}
-                  className="form-control"
-                  placeholder="ระบุจำนวนอุปกรณ์"
-                  value={equipment.quantity}
-                  onChange={(event) => {
-                    const updatedEquipmentList = [...newEquipmentList];
-                    updatedEquipmentList[index].quantity = event.target.value;
-                    setNewEquipmentList(updatedEquipmentList);
-                  }}
-                />
-              </div>
+            <div className="mb-3" key={index}>
+              <label htmlFor={`equipment_name_${index}`} className="form-label">
+                ชื่ออุปกรณ์:
+              </label>
+              <select
+                className="form-select"
+                id={`equipment_name_${index}`}
+                onChange={(event) => {
+                  const updatedEquipmentList = [...newEquipmentList];
+                  updatedEquipmentList[index].equipment_name =
+                    event.target.value;
+                  setNewEquipmentList(updatedEquipmentList);
+                }}
+              >
+                <option value="">-กรุณาเลือกประเภทอุปกรณ์-</option>
+                <option value="computer">computer</option>
+                <option value="visualizer">visualizer</option>
+                <option value="Projector">Projector</option>
+                <option value="microphone">microphone</option>
+              </select>
+
+              <label htmlFor={`quantity_${index}`} className="form-label">
+                จำนวน:
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id={`quantity_${index}`}
+                placeholder="ระบุจำนวนอุปกรณ์"
+                onChange={(event) => {
+                  const updatedEquipmentList = [...newEquipmentList];
+                  updatedEquipmentList[index].quantity = event.target.value;
+                  setNewEquipmentList(updatedEquipmentList);
+                }}
+              />
             </div>
           ))}
 
@@ -361,54 +358,55 @@ export default function RoomData() {
           </button>
           <br />
           <br />
-          {roomsList.map((val, key) => {
-            return (
-              <div className="room card" key={key}>
-                <div className="card-body text-left">
-                  <pre>
-                    <p className="card-text">
-                      รหัสห้อง: {val.room_id}
-                      เลขห้อง : {val.room_number} จำนวนที่นั่ง: {val.capacity}
-                    </p>
-                    <p className="card-text">
-                      อาคาร : {val.building_name} ชั้น : {val.floor}
-                    </p>
-                  </pre>
-
-                  <p className="card-text">
-                    <pre>
-                      {" "}
-                      อุปกรณ์ : {val.equipment_name} จำนวนอุปกรณ์ :{" "}
-                      {val.quantity}
-                    </pre>
-                    {/* <div className="d-flex"> */}
-                    <p>
-                      <input
-                        type="number"
-                        placeholder="เปลี่ยนแปลงจำนวนอุปกรณ์"
-                        onChange={(event) => {
-                          setNewQuantity(event.target.value);
-                        }}
-                      />
-                      <button
-                        className="btn btn-warning"
-                        onClick={() => updateRoomData(val)}
-                      >
-                        Update
-                      </button>{" "}
-                      <button
-                        className="btn btn-warning"
-                        onClick={() => deleteRoom(val.room_id)}
-                      >
-                        delete
-                      </button>
-                    </p>
-                    {/* </div> */}
-                  </p>
-                </div>
+          {roomsList &&
+  roomsList.map((val, key) => {
+    return (
+      <div className="room card" key={key}>
+        <div className="card-body text-left">
+          <pre>
+            <p className="card-text">
+              {/* รหัสห้อง: {val.room_id}  */}
+              เลขห้อง: {val.room_number}{" "}
+              จำนวนที่นั่ง: {val.capacity}
+            </p>
+            <p className="card-text">
+              อาคาร: {val.building_name} ชั้น: {val.floor}
+            </p>
+            {val.equipment_name && val.quantity && ( // แก้ไขตรงนี้เป็นการเช็คว่ามีรายการอุปกรณ์หรือไม่
+              <div>
+                <p>
+                  อุปกรณ์: {val.equipment_name} จำนวนอุปกรณ์: {val.quantity}
+                </p>
               </div>
-            );
-          })}
+            )}
+            {/* อุปกรณ์: {val.equipmentList.map(equipment => `${equipment.equipment_name} (${equipment.quantity})`).join(', ')} */}
+          </pre>
+          <p>
+            <input
+              type="number"
+              placeholder="เปลี่ยนแปลงจำนวนอุปกรณ์"
+              onChange={(event) => {
+                setNewQuantity(event.target.value);
+              }}
+            />
+            <button
+              className="btn btn-warning"
+              onClick={() => updateRoomData(val)}
+            >
+              Update
+            </button>{" "}
+            <button
+              className="btn btn-warning"
+              onClick={() => deleteRoom(val.room_id)}
+            >
+              delete
+            </button>
+          </p>
+        </div>
+      </div>
+    );
+  })}
+
         </div>
       </WhiteRectangle>
     </>
