@@ -19,7 +19,7 @@ export default function Booking2() {
   };
 
   const navigateToBooking3 = () => {
-    navigate("/Booking/booking2/booking3", { state: { selectedRooms, building: filterCriteria.building_id, dateStart: filterCriteria.dateStart, dateEnd: filterCriteria.dateEnd  , floor: filterCriteria.floor ,  date: filterCriteria.date} });
+    navigate("/Booking/booking2/booking3", { state: { selectedRooms, building: filterCriteria.building_id, dateStart: filterCriteria.dateStart, dateEnd: filterCriteria.dateEnd  , floor: filterCriteria.floor ,  date: filterCriteria.date , capacity: filterCriteria.capacity} });
   };
   
   return (

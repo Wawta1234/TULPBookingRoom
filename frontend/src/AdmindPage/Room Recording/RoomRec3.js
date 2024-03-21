@@ -2,24 +2,16 @@ import React, { useState, useEffect } from "react";
 import AdminBar from "../../component/AdminBar";
 import Header from "../../component/Header";
 import WhiteRectangle from "../../component/WhiteRectangle";
-import { useNavigate } from "react-router-dom";
-import Room from "../../component/Room";
+import { useNavigate, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 
 export default function RoomRec3() {
   const navigate = useNavigate();
-  const [courseData, setCourseData] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/data/subject/create")
-      .then((response) => {
-        setCourseData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching building data:", error);
-      });
-  });
+  const location = useLocation();
+  const selectedRooms = location.state ? location.state.selectedRooms : [];
+  const subject = location.state ? location.state.subject : "";
+  const teacher_name = location.state ? location.state.teacher_name : "";
 
   const handleConfirm = (e) => {
     e.preventDefault();
@@ -32,11 +24,20 @@ export default function RoomRec3() {
     });
   };
 
-  const handleEditOptions = async (e, episodeNumber) => {
-    e.preventDefault();
+  const handleEditEpisode = (episodeNumber) => {
+    navigate("/Edit4", {
+      state: {
+        episodeNumber,
+        selectedRooms,
+        subject,
+        teacher_name,
+      },
+    });
+  };
 
+  const handleDeleteEpisode = async (episodeNumber) => {
     const result = await Swal.fire({
-      title: `คุณต้องการลบบรรยายครั้งที่ x ใช่หรือไม่?`,
+      title: `คุณต้องการลบบรรยายครั้งที่ ${episodeNumber} ใช่หรือไม่?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "ใช่",
@@ -46,112 +47,41 @@ export default function RoomRec3() {
     });
 
     if (result.isConfirmed) {
-      // ทำการลบรายการบรรยาย
-      await deleteEpisode(episodeNumber);
-
-      // แสดงข้อความว่าลบสำเร็จ
+      
       Swal.fire({
         title: `ลบบรรยายครั้งที่ ${episodeNumber} เรียบร้อยแล้ว`,
         icon: "success",
         confirmButtonText: "ตกลง",
       }).then(() => {
-        // นำผู้ใช้กลับไปยังหน้า roomrec3
-        navigate("/RoomRecording/RoomRecording2/RoomRecording3");
+        window.location.reload();
       });
     }
   };
 
-  const deleteEpisode = async (episodeNumber) => {
-    // ทำการลบรายการบรรยายในฐานข้อมูล
-    // ตัวอย่าง: await axios.delete(`/api/deleteEpisode/${episodeNumber}`);
-    console.log(`ลบบรรยายครั้งที่ ${episodeNumber} สำเร็จ`);
-  };
-
-  const navigateToHome = () => {
-    navigate("/AdminHome");
-  };
-
-  const navigateToEdit4 = () => {
-    navigate("/Edit4");
-  };
   return (
     <>
       <Header />
       <AdminBar />
       <WhiteRectangle>
-        {/* {courseData.map((course, index) => (
-          <div key={index}>
-         */}
         <div className="content">
           <p>
-            <per>รายวิชา :   อาจารย์ผู้สอน : </per>
-            <pre>
-              ครั้งที่ 1 : วันที่ xx.xx.xxxx     เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 2 : วันที่ xx.xx.xxxx      เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 3 : วันที่ xx.xx.xxxx      เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 4 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 5 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 6 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 7 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 8 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 9 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 10 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 11 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 12 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 13 : วันที่ xx.xx.xxxx        เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 14 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              ครั้งที่ 15 : วันที่ xx.xx.xxxx       เวลา : xx : xx ห้อง : xxxx{" "}
-              <i class="bi bi-pencil-square" onClick={navigateToEdit4}></i>{" "}
-              <i class="bi bi-trash" onClick={handleEditOptions}></i>
-              <br />
-              <button onClick={handleConfirm}>ตกลง </button>
-            </pre>
+            <strong>รายวิชา:</strong> {subject} <br />
+            <strong>อาจารย์ผู้สอน:</strong> {teacher_name} <br /><br />
+            {selectedRooms && selectedRooms.length > 0 ? (
+              selectedRooms.map((room, index) => (
+                <div key={index}>
+                  <strong>ครั้งที่ {index + 1}:</strong> วันที่{" "}
+                  {room.date.toLocaleDateString()} เวลา {room.selectedTime === "1" ? "09:30 - 12:30" : room.selectedTime === "2" ? "13:30 - 16:30" : "17:00 - 20:00"} ห้อง: {room.room_number} {" "}
+                  <i className="bi bi-pencil-square" onClick={() => handleEditEpisode(index + 1)}></i>{" "}
+                  <i className="bi bi-trash" onClick={() => handleDeleteEpisode(index + 1)}></i>
+                </div>
+              ))
+            ) : (
+              <p>ไม่พบรายการบรรยาย</p>
+            )}
           </p>
+          <button onClick={handleConfirm}>ตกลง</button>
         </div>
-        {/* </div> */}
-        {/* ))} */}
       </WhiteRectangle>
     </>
   );

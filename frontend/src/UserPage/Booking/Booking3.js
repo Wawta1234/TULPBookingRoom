@@ -1,56 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Menu from "../../component/Menu";
 import Header from "../../component/Header";
 import WhiteRectangle from "../../component/WhiteRectangle";
-import Room from "../../component/Room";
 import Swal from "sweetalert2";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 
-export default function Booking3() {
+const Booking3 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const selectedRooms = location.state ? location.state.selectedRooms : [];
   const building = location.state ? location.state.building : "";
   const floor = location.state ? location.state.floor : "";
-  const dateStart = location.state ? location.state.dateStart : "";
-  const dateEnd = location.state ? location.state.dateEnd : "";
+  const capacity = location.state ? location.state.capacity : "";
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const date = location.state ? location.state.date : "";
-
-  // useEffect(() => {
-  //   const userDataFromStorage = localStorage.getItem("userData");
-  //   console.log("Building from location state:", building); // เพิ่มบรรทัดนี้เพื่อตรวจสอบค่า building
-  //   console.log("userData B3 :", userDataFromStorage);
-  //   if (userDataFromStorage) {
-  //     setUserData(JSON.parse(userDataFromStorage));
-  //   }
-  // }, [building]);
+  const selectedTime = location.state ? location.state.selectedTime : "";
 
   useEffect(() => {
     const userDataFromStorage = localStorage.getItem("userData");
-
-    console.log("userData B3 :", userDataFromStorage);
     if (userDataFromStorage) {
       setUserData(JSON.parse(userDataFromStorage));
     }
   }, []);
-  console.log("userData B3 is:", userData);
 
-  const handleConfirm = (e) => {
-    e.preventDefault();
-    Swal.fire({
-      title: "ส่งคำขอเรียบร้อย",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then(() => {
-      navigate("/Home");
+  const addReservations = () => {
+    const objective = document.getElementsByName("objective")[0].value;
+    console.log("user id in booking3  is :", userData.username);
+    selectedRooms.forEach((room) => {
+      axios
+        .post(
+          "http://localhost:8080/api/data/reservations/create",
+          {
+            user_id: userData.username,
+            date_reser: new Date(),
+            approve: 2,
+            objective: objective,
+            time_slot_id: room.selectedTime,
+            room_id: room.room_number,
+            date_use: new Date(room.date),
+            std_amount: capacity
+
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Data posted successfully:", response.data);
+          Swal.fire({
+            title: "ส่งคำขอเรียบร้อย",
+            icon: "success",
+            confirmButtonText: "OK",
+          }).then(() => {
+            navigate("/Home");
+          });
+        })
+        .catch((error) => {
+          console.error("Error adding room:", error);
+          Swal.fire({
+            title: "เกิดข้อผิดพลาด",
+            text: "ไม่สามารถส่งคำขอได้ในขณะนี้ โปรดลองอีกครั้ง",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        });
     });
   };
-  const navigateToBooking2 = () => {
-    navigate("/Booking/booking2");
-  };
+  
 
   const getBuildingName = () => {
     switch (parseInt(building)) {
@@ -72,6 +91,9 @@ export default function Booking3() {
         return "";
     }
   };
+  const navigateToBooking2 = () => {
+    navigate("/Booking/booking2");
+  };
 
   return (
     <>
@@ -92,7 +114,7 @@ export default function Booking3() {
             <br />
             {selectedRooms.map((room, index) => (
               <div key={index}>
-                วันที่ :    {room.date
+                วันที่  {room.date
                     ? new Date(room.date).toLocaleDateString()
                     : ""}{" "}    เวลา : {" "}
                 {room.selectedTime === "1"
@@ -107,12 +129,9 @@ export default function Booking3() {
           </pre>
           <br />
           <pre>
-            <label for="title">กรุณาระบุชื่อโครงการ</label>
+            <label for="objective">กรุณาระบุชื่อโครงการ</label>
             <span>&nbsp;&#42;</span>
-            <input type="text" name="title" /> จำนวนผู้เข้าร่วม : xx <br />
-            <label for="equipment">เบอร์โทรติดต่อ</label>
-            <span>&nbsp;&#42;</span>
-            <input type="text" name="phone" />
+            <input type="text" name="objective" /> จำนวนผู้เข้าร่วม : {capacity} <br />
             <label for="Projectdocuments">
               {" "}
               เอกสารอนุมัติโครงการ / กำหนดการ
@@ -123,9 +142,12 @@ export default function Booking3() {
           <button className="edit-btn" onClick={navigateToBooking2}>
             แก้ไข
           </button>
-          <button onClick={handleConfirm}>ตกลง</button>
+          <button onClick={addReservations}>ตกลง</button>
+
+          {/* <input type="date" name="date_reser" /> */}
         </div>
       </WhiteRectangle>
     </>
   );
 }
+export default Booking3;

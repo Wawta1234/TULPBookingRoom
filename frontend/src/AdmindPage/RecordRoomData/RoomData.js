@@ -369,6 +369,7 @@ export default function RoomData() {
               เลขห้อง: {val.room_number}{" "}
               จำนวนที่นั่ง: {val.capacity}
             </p>
+            
             <p className="card-text">
               อาคาร: {val.building_name} ชั้น: {val.floor}
             </p>
