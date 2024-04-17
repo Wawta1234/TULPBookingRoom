@@ -10,7 +10,7 @@ export default function AdmindReserTwo() {
     <Header />
     <AdminBar2 />
     <WhiteRectangle >
-        <StatusBar />
+        {/* <StatusBar /> */}
         <Status />
 
     </WhiteRectangle>

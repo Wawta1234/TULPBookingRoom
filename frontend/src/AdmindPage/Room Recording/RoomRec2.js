@@ -19,7 +19,6 @@ export default function RoomRec2() {
   };
 
   const navigateToRoomRec3 = () => {
-   
     const startDate = new Date(filterCriteria.dateStart);
     const endDate = new Date(filterCriteria.dateEnd);
     const dates = [];
@@ -47,9 +46,11 @@ export default function RoomRec2() {
         date: filterCriteria.date,
         capacity: filterCriteria.capacity,
         subject: filterCriteria.subject,
-        faculty: filterCriteria.faculty,
+        faculty_id: filterCriteria.faculty_id,
         teacher_name: filterCriteria.teacher_name,
         section: filterCriteria.section,
+        subject_name : filterCriteria.subject_name,
+        faculty: filterCriteria.faculty,
       },
     });
   };

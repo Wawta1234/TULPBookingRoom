@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 export default function Status() {
+  const navigate = useNavigate();
   const [reservations, setReservations] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [filterStatus, setFilterStatus] = useState(null);
@@ -56,6 +57,11 @@ export default function Status() {
     setFilterStatus(status);
   };
 
+  const handleItemClick = (reservationId) => {
+    navigate(`/reservations/reservationTwo/${reservationId}`);
+  };
+  
+  
   return (
     <div className="status">
       <link
@@ -96,22 +102,25 @@ export default function Status() {
         .map((reservation) => {
           const room = rooms.find((room) => room.id === reservation.room_id);
           return (
-            <div key={reservation.id} className="item">
+            <div key={reservation.id} className="item" onClick={() => handleItemClick(reservation.id)}>
               <i className="bi bi-calendar-check"></i>
               <p>
                 <pre>
-                  วันที่ :{" "}
-                  {new Date(reservation.date_reser).toLocaleDateString()} เวลา :{" "}
+                  วันที่ทำรายการ :{" "}
+                  {new Date(reservation.date_reser).toLocaleDateString()}  ชื่อโครงการ : {reservation.objective}
+                  {/* เวลา :{" "}
                   {reservation.time_slot_id === 1
                     ? "09:30 - 12:30"
                     : reservation.time_slot_id === 2
                     ? "13:30 - 16:30"
                     : reservation.time_slot_id === 3
                     ? "17:00 - 20:00"
-                    : "ไม่ระบุเวลา"}
+                    : "ไม่ระบุเวลา"
+                    } */}
+                    
                   <br />
-                  ห้อง : {reservation.room_number} ชั้น : {reservation.floor}{" "}
-                  อาคาร : {reservation.building_name}
+                  {/* ห้อง : {reservation.room_number} ชั้น : {reservation.floor}{" "}
+                  อาคาร : {reservation.building_name} */}
                   <br />
                   สถานะคำขอ :{" "}
                   {reservation.approve === 1

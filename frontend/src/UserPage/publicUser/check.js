@@ -18,18 +18,7 @@ export default function CheckAvailability() {
     color: "red",
 
   };
-  // const buttonStyle = {
-  //   backgroundColor: "green", // กำหนดสีเขียว
-  //   color: "white", // กำหนดสีข้อความเป็นขาว
-  //   padding: "10px 20px", // กำหนดขนาดพื้นที่ padding
-  //   border: "none", // กำหนดไม่มีเส้นขอบ
-  //   borderRadius: "5px", // กำหนดเส้นรอบวง
-  //   cursor: "pointer", // เปลี่ยนรูปแบบเคอร์เซอร์เป็น pointer เมื่อชี้ไปที่ปุ่ม
-  //   display: "block", // ทำให้ปุ่มตรงกลาง
-  //   margin: "auto", // ย้ายไปตรงกลาง
-  //   marginTop: "20px", // ขยับจากด้านบน
-  // };
-
+ 
 
   return (
     <div>

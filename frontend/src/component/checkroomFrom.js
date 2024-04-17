@@ -7,10 +7,8 @@ export default function CheckroomFrom() {
   const [selectedDate, setSelectedDate] = useState("");
   const navigate = useNavigate();
   const [filterCriteria, setFilterCriteria] = useState({
-    // dateStart: "",
-    // dateEnd: "",
+    dateStart: "",
     building_id: "",
-    capacity: "",
     floor: "",
     room_type: "",
   });
@@ -52,10 +50,10 @@ export default function CheckroomFrom() {
           <option value="1">อาคารบุญชูปณิธาน</option>
           <option value="2">อาคารเรียนรวม 4 ชั้น</option>
           <option value="3">อาคารเรียนรวม 5 ชั้น</option>
-          <option value="4">อาคารสิรินธรารัตน์</option>
-          <option value="5">อาคารนวัตกรรมบริการ</option>
-          <option value="6">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
-          <option value="7">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
+          <option value="5">อาคารสิรินธรารัตน์</option>
+          <option value="6">อาคารนวัตกรรมบริการ</option>
+          <option value="7">อาคารอเนกประสงค์และสนามกีฬาในร่ม</option>
+          <option value="8">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
         </select>
         <p>
           ชั้น :

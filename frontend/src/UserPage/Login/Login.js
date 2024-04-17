@@ -31,6 +31,7 @@ function Login() {
         displayname_th: "TuBookingRoom Admind1",
         email: "admin2@example.com",
         department: "Admin Department",
+        role: "admin", // กำหนดบทบาทเป็น "admin"
       };
       // เก็บข้อมูลผู้ใช้ใน localStorage
       localStorage.setItem("userData", JSON.stringify(userData));
@@ -47,6 +48,7 @@ function Login() {
         displayname_th: "TuBookingRoom Admind2",
         email: "admin2@example.com",
         department: "Admin Department",
+        role: "admin2", // กำหนดบทบาทเป็น "admin"
       };
       // เก็บข้อมูลผู้ใช้ใน localStorage
       localStorage.setItem("userData", JSON.stringify(userData));
@@ -90,6 +92,13 @@ function Login() {
           const userExists = await checkUserExists(inputs.username);
           if (!userExists) {
             // ส่งข้อมูลผู้ใช้ไปเก็บในฐานข้อมูล
+            await createUser({
+              username: inputs.username,
+              password: inputs.password,
+              displayname_th: result.displayname_th,
+              email: result.email,
+              department: result.department,
+            });
             const userData = {
               username: inputs.username,
               password: inputs.password,
@@ -118,10 +127,30 @@ function Login() {
       const data = await response.json();
       return data.exists;
     } catch (error) {
-      console.error("Error checking user existence:", error);
+      console.error('Error checking user existence:', error);
       return false;
     }
   };
+
+
+  const createUser = async (userData) => {
+    try {
+      const response = await fetch('http://localhost:8080/api/data/user/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
+
+  
+  
 
   return (
     <div className="background-image">

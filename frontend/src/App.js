@@ -9,6 +9,7 @@ import Booking3 from "./UserPage/Booking/Booking3";
 import CheckRoom from "./UserPage/CheckRoom/CheckRoom";
 import CheckRoom2 from "./UserPage/CheckRoom/CheckRoom2";
 import Reservations from "./UserPage/Reservations/Reservations";
+import ReservationTwo from "./UserPage/Reservations/ReservationTwo";
 import ReservationWait from "./UserPage/Reservations/ReservationWait";
 import ReservationYes from "./UserPage/Reservations/ReservationYes";
 import ReservationNot from "./UserPage/Reservations/ReservationNot";
@@ -49,6 +50,7 @@ function App() {
           <Route path="/checkRoom" element={<CheckRoom/>} />
           <Route path="/checkRoom/checkRoom2" element={<CheckRoom2/>} />
           <Route path="/reservations" element ={<Reservations />} />
+          <Route path="/reservations/reservationTwo/:reservationId" element={<ReservationTwo />} />
           <Route path="/reservations/reservationWait" element ={<ReservationWait />} /> 
           <Route path="/reservations/reservationYes" element ={<ReservationYes />} />
           <Route path="/reservations/reservationNot" element ={<ReservationNot />} />

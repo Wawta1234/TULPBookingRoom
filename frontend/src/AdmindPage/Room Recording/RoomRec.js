@@ -5,8 +5,9 @@ import WhiteRectangle from "../../component/WhiteRectangle";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 export default function RoomRec() {
+  
   const [filterCriteria, setFilterCriteria] = useState({
-    faculty: "",
+    faculty_id: "",
     teacher_name: "",
     section: "",
     dateStart: "",
@@ -16,6 +17,7 @@ export default function RoomRec() {
     floor: "",
     room_type: "",
     subject : "",
+    subject_name : "",
   });
 
   const handleFilterChange = (event) => {
@@ -69,27 +71,35 @@ export default function RoomRec() {
               <option value="5">วิทยาศาสตร์แลัเทคโนโลยี</option>
               <option value="6">สาธารณะสุขศาสตร์</option>
             </select>
-            รายวิชา <span>&nbsp;&#42;</span> :
-            <input
-              type="text"
-              name="subject"
-              onChange={handleFilterChange}
-            />
-            <p>
+           
               อาจารย์ผู้บรรยาย :
               <input
                 type="text"
                 name="teacher_name"
                 onChange={handleFilterChange}
               />
-            </p>
+            
+            < p/>
+            รายวิชา <span>&nbsp;&#42;</span> :
+            <input
+              type="text"
+              name="subject"
+              onChange={handleFilterChange}
+            />
+             ชื่อรายวิชา <span>&nbsp;&#42;</span> :
+            <input
+              type="text"
+              name="subject_name"
+              onChange={handleFilterChange}
+            />
+            
             <p />
             จำนวนผู้เข้าร่วม
             <span>&nbsp;&#42;</span> :
             <input type="number" name="capacity"   onChange={handleFilterChange}/>
             เซค
             <span>&nbsp;&#42;</span>
-            <input type="number" name="section" />
+            <input type="number" name="section"  onChange={handleFilterChange}/>
             <br />
             <p />
             อาคาร <span>&nbsp;&#42;</span>:

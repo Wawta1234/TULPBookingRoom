@@ -9,20 +9,69 @@ import axios from "axios";
 export default function RoomRec3() {
   const navigate = useNavigate();
   const location = useLocation();
-  const selectedRooms = location.state ? location.state.selectedRooms : [];
-  const subject = location.state ? location.state.subject : "";
-  const teacher_name = location.state ? location.state.teacher_name : "";
+  // const selectedRooms = location.state ? location.state.selectedRooms : [];
+  // const subject = location.state ? location.state.subject : "";
+  // const teacher_name = location.state ? location.state.teacher_name : "";
+  // const subject_name = location.state ? location.state.subject_name : "";
+  // const capacity = location.state ? location.state.capacity: "";
+  // const building = location.state ? location.state.building : "";
+  // const floor = location.state ? location.state.floor : "";
+  // const faculty = location.state ? location.state.faculty : "";
+  // const section = location.state ? location.state.section : "";
+  const { selectedRooms, building, dateStart, dateEnd, floor, date, capacity, subject, faculty_id, teacher_name, section, subject_name } = location.state;
 
-  const handleConfirm = (e) => {
-    e.preventDefault();
-    Swal.fire({
-      title: "บันทึกข้อมูลห้องบรรยายเรียบร้อยแล้ว",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then(() => {
-      navigate("/AdminHome");
+
+
+
+ const addRoomRec = () =>{
+  axios.post(
+    "http://localhost:8080/api/data/timetable/saveTimetable",
+    {
+      subject: subject,
+      teacher_name: teacher_name,
+      subject_name: subject_name,
+      selectedRooms: selectedRooms.map(room => ({
+        date: room.date.toLocaleDateString(), // Convert date to string
+        selectedTime: room.selectedTime,
+        room_number: room.room_number
+      })),
+      capacity : capacity,
+      floor : floor,
+      faculty_id : faculty_id ,
+      section : section,
+      building : building,
+      faculty_id : faculty_id,
+      section : section,
+      
+    }
+  ).then(response => {
+      // Handle success
+      console.log("Data added successfully:", response.data);
+      // Show success message
+      Swal.fire({
+        title: "บันทึกข้อมูลห้องบรรยายเรียบร้อยแล้ว",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/AdminHome");
+      });
+    }).catch(error => {
+      console.error("Error adding data:", error);
+
+      Swal.fire({
+        title: "เกิดข้อผิดพลาดในการบันทึกข้อมูล",
+        text: "โปรดลองอีกครั้ง",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     });
-  };
+ }
+
+ const handleConfirm = (e) => {
+  e.preventDefault();
+  addRoomRec();
+};
+
 
   const handleEditEpisode = (episodeNumber) => {
     navigate("/Edit4", {
@@ -31,6 +80,7 @@ export default function RoomRec3() {
         selectedRooms,
         subject,
         teacher_name,
+        subject_name,
       },
     });
   };
@@ -67,6 +117,7 @@ export default function RoomRec3() {
           <p>
             <strong>รายวิชา:</strong> {subject} <br />
             <strong>อาจารย์ผู้สอน:</strong> {teacher_name} <br /><br />
+            {/* <strong>จำนวนผู้เข้าร่วม </strong> {capacity} */}
             {selectedRooms && selectedRooms.length > 0 ? (
               selectedRooms.map((room, index) => (
                 <div key={index}>
@@ -86,3 +137,4 @@ export default function RoomRec3() {
     </>
   );
 }
+ 

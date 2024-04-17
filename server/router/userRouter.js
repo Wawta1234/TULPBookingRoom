@@ -58,28 +58,28 @@ userRouter.post('/api/data/user/create', (req, res) => {
 
 
 
-userRouter.post('/api/data/user/create', (req, res) => {
-    console.log("Request body: ", req.body);
+// userRouter.post('/api/data/user/create', (req, res) => {
+//     console.log("Request body: ", req.body);
 
-    const id = req.body.id;
-    const username = req.body.username;
-    const displayname_th = req.body.displayname_th;
-    const email = req.body.email;
-    const password = req.body.password;
-    const department = req.body.department;
+//     const id = req.body.id;
+//     const username = req.body.username;
+//     const displayname_th = req.body.displayname_th;
+//     const email = req.body.email;
+//     const password = req.body.password;
+//     const department = req.body.department;
    
 
-    db.query("INSERT INTO user (id, username, displayname_th, email, password ,department) VALUES ( ?, ?, ?, ?, ? , ?)",
-        [id, username, displayname_th, email, password, department],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-            } else {
-                res.send("Values inserted");
-            }
-        }
-    );
-});
+//     db.query("INSERT INTO user (id, username, displayname_th, email, password ,department) VALUES ( ?, ?, ?, ?, ? , ?)",
+//         [id, username, displayname_th, email, password, department],
+//         (err, result) => {
+//             if (err) {
+//                 console.log(err);
+//             } else {
+//                 res.send("Values inserted");
+//             }
+//         }
+//     );
+// });
 
 userRouter.put('/api/data/user/update', (req, res) => {
     console.log("Request body: ", req.body);

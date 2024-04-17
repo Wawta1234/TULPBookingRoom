@@ -16,7 +16,9 @@ const Booking3 = () => {
   const [userData, setUserData] = useState(null);
   const date = location.state ? location.state.date : "";
   const selectedTime = location.state ? location.state.selectedTime : "";
-
+  const [reservationId, setReservationId] = useState(null);
+  const [reservationsDetails, setReservationsDetails] = useState([]);
+  
   useEffect(() => {
     const userDataFromStorage = localStorage.getItem("userData");
     if (userDataFromStorage) {
@@ -26,49 +28,43 @@ const Booking3 = () => {
 
   const addReservations = () => {
     const objective = document.getElementsByName("objective")[0].value;
-    console.log("user id in booking3  is :", userData.username);
-    selectedRooms.forEach((room) => {
-      axios
-        .post(
-          "http://localhost:8080/api/data/reservations/create",
-          {
-            user_id: userData.username,
-            date_reser: new Date(),
-            approve: 2,
-            objective: objective,
-            time_slot_id: room.selectedTime,
-            room_id: room.room_number,
-            date_use: new Date(room.date),
-            std_amount: capacity
+    const requestBody = {
+      user_id: userData.username,
+      date_reser: new Date(),
+      approve: 2,
+      objective: objective,
+      details: selectedRooms.map(room => ({
+        room_id: room.room_number,
+        date_use: new Date(room.date),
+        std_amount: capacity,
+        time_slot_id: room.selectedTime
+      }))
+    };
 
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          console.log("Data posted successfully:", response.data);
-          Swal.fire({
-            title: "ส่งคำขอเรียบร้อย",
-            icon: "success",
-            confirmButtonText: "OK",
-          }).then(() => {
-            navigate("/Home");
-          });
-        })
-        .catch((error) => {
-          console.error("Error adding room:", error);
-          Swal.fire({
-            title: "เกิดข้อผิดพลาด",
-            text: "ไม่สามารถส่งคำขอได้ในขณะนี้ โปรดลองอีกครั้ง",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
+    axios
+      .post("http://localhost:8080/api/data/reservations/create", requestBody)
+      .then((response) => {
+        setReservationId(response.data.reservationId);
+        setReservationsDetails(response.data.reservationsDetails);
+        Swal.fire({
+          title: "ส่งคำขอเรียบร้อย",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then(() => {
+          navigate("/Home");
         });
-    });
+      })
+      .catch((error) => {
+        console.error("Error adding reservation:", error);
+        Swal.fire({
+          title: "เกิดข้อผิดพลาด",
+          text: "ไม่สามารถส่งคำขอได้ในขณะนี้ โปรดลองอีกครั้ง",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      });
   };
+
   
 
   const getBuildingName = () => {

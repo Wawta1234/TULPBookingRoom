@@ -171,4 +171,32 @@ roomAddRouter.get('/api/data/roomForAdd', (req, res) => {
 });
 
 
+roomAddRouter.get('/api/data/roomForRoomCheck', (req, res) => {
+    
+    const { building_id, floor,  room_type } = req.query;
+// console.log(response.data);
+    let sql = "SELECT room.*, building.building_name FROM room inner join building on room.building_id = building.id WHERE 1=1";
+
+    if (building_id) {
+        sql += ` AND room.building_id = '${building_id}'`;
+    }
+    if (floor) {
+        sql += ` AND floor = '${floor}'`;
+    }
+    
+    if (room_type) {
+        sql += ` AND room_type = '${room_type}'`;
+    }
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("An error occurred while fetching data");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+
 module.exports = roomAddRouter ;

@@ -2,7 +2,8 @@ import React from 'react'
 import Header from '../../component/Header'
 import AdminBar from '../../component/AdminBar'
 import WhiteRectangle from '../../component/WhiteRectangle'
-import Room from '../../component/Room'
+// import Room from '../../component/Room'
+import RoomCheck from '../../UserPage/publicUser/RoomCheck'
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function AdminCheck2() {
@@ -13,7 +14,7 @@ export default function AdminCheck2() {
     <Header/>
     <AdminBar />
     <WhiteRectangle>
-    <Room building_id = {filterCriteria.building_id}  floor={filterCriteria.floor} room_type={ filterCriteria.room_type}/> 
+    <RoomCheck building_id = {filterCriteria.building_id}  floor={filterCriteria.floor} room_type={ filterCriteria.room_type}/> 
     </WhiteRectangle>
     </>
   )
