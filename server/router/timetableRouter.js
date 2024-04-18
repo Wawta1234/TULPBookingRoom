@@ -4,8 +4,10 @@ const db = require("../connect"); // Correct the import statement
 
 const timetableRouter = router;
 
+
 timetableRouter.get("/api/data/timetable", (req, res) => {
-  db.query("SELECT * FROM timetable", (err, result) => {
+ 
+  db.query("SELECT timetable.* , room.* FROM timetable INNER JOIN room ON timetable.room_id = room.id ", (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -13,6 +15,7 @@ timetableRouter.get("/api/data/timetable", (req, res) => {
     }
   });
 });
+
 
 timetableRouter.post("/api/data/timetable/create", (req, res) => {
   console.log("Request body:", req.body);
@@ -60,18 +63,31 @@ timetableRouter.put("/api/data/timetable/update", (req, res) => {
   );
 });
 
-timetableRouter.delete("/api/data/timetable/delete", (req, res) => {
-  console.log("Request body:", req.body);
+timetableRouter.delete("/api/data/timetable/delete/:subjectId", (req, res) => {
+  const id = req.params.subjectId;
+  console.log("Request body: ", req.body);
+  console.log("id: ", id);
 
-  const id = req.body.id;
-  db.query("DELETE FROM timetable WHERE id = ? ", [id], (err, result) => {
+  // ลบข้อมูลในตาราง timetable
+  db.query("DELETE FROM timetable WHERE subject_id = ?", [id], (err, result) => {
     if (err) {
       console.log(err);
+      res.status(500).send("เกิดข้อผิดพลาดในการลบข้อมูลในตาราง timetable");
     } else {
-      res.send("Valuse inserted");
+      // หลังจากลบข้อมูลในตาราง timetable เรียบร้อยแล้ว ก็ลบข้อมูลในตาราง subject ด้วย
+      db.query("DELETE FROM subject WHERE id = ?", [id], (err, result) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send("เกิดข้อผิดพลาดในการลบข้อมูลในตาราง subject");
+        } else {
+          // หากทั้งสองตารางลบข้อมูลสำเร็จ ให้ส่งข้อความแสดงว่าลบข้อมูลเรียบร้อย
+          res.status(200).send("ลบข้อมูลรายวิชาเรียบร้อยแล้ว");
+        }
+      });
     }
   });
 });
+
 
 //ใช้บันทึกข้อมูลตารางสอน
 

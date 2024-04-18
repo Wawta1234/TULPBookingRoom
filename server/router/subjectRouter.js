@@ -4,7 +4,18 @@ const db = require('../connect'); // Correct the import statement
 
 const subjectRouter = router
 
+// subjectRouter.get("/api/data/subject", (req, res) => {
+//     db.query("SELECT * FROM subject", (err, result) => {
+//         if (err) {
+//             console.error(err);
+//             res.status(500).send("เกิดข้อผิดพลาดในการดึงข้อมูลรายวิชา");
+//         } else {
+//             res.status(200).send(result);
+//         }
+//     });
+// });
 
+  
 subjectRouter.get('/api/data/subject' , (req, res) =>{
     const {subject} = req.query;
     let sql = "SELECT * FROM subject"

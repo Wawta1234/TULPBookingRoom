@@ -11,35 +11,49 @@ export default function EditRoom2() {
   const navigate = useNavigate();
   const location = useLocation();
   const filterCriteria = location.state;
+  const [timetable, setTimetable] = useState([]);
 
   const [subjectData, setsubjectData] = useState([]);
-  const [teacherName , setTeacherName] = useState("");
+  const [teacherName, setTeacherName] = useState("");
+
   // const [filterCriteria, setFilterCriteria] = useState({ subject: "" });
- 
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/data/timetable", {
+        params: { subject: filterCriteria.subject },
+      })
+      .then((response) => {
+        console.log("Timetable data:", response.data);
+        setTimetable(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching timetable data:", error);
+      });
+  }, []);
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/data/subject", {
-        params: { subject: filterCriteria.subject},
+        params: { subject: filterCriteria.subject },
       })
       .then((response) => {
-        console.log('data from subjec' ,response.data); 
+        console.log("data from subjec", response.data);
         setsubjectData(response.data);
         let data = response.data[0].teacher_id;
         // console.log('data teacher id: ', data)
 
-        axios.get(`http://localhost:8080/api/data/teacher`,{
-          params : {id : data}
-        })
-          .then(response => {
-            // console.log('data teacher id: ', data) 
-            console.log('data from teacher' ,response.data); 
-            setTeacherName(response.data[0].teacher_name);
-             
+        axios
+          .get(`http://localhost:8080/api/data/teacher`, {
+            params: { id: data },
           })
-          .catch(error => {
-            console.error('Error fetching building data:', error);
+          .then((response) => {
+            // console.log('data teacher id: ', data)
+            console.log("data from teacher", response.data);
+            setTeacherName(response.data[0].teacher_name);
+          })
+          .catch((error) => {
+            console.error("Error fetching building data:", error);
           });
-
       })
       .catch((error) => {
         console.error("Error fetching subject data:", error);
@@ -88,6 +102,13 @@ export default function EditRoom2() {
       }
     });
   };
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
 
   const navigateToEdit1 = () => {
     navigate("/EditRoom");
@@ -104,53 +125,36 @@ export default function EditRoom2() {
         <div className="EditRoom">
           {subjectData.map((subject, index) => (
             <div key={index}>
+              <br /><br /><br />
               <h3>รายละเอียดห้องบรรยาย</h3>
               <h3>
                 {" "}
                 <pre>
                   {" "}
-                  รหัสวิชา : {subject.subject} รายวิชา : {subject.subject_name} ผู้สอน : {teacherName}{" "}
+                  รหัสวิชา : {subject.subject} รายวิชา : {subject.subject_name}{" "}
+                  ผู้สอน : {teacherName}{" "}
                 </pre>
               </h3>
               <br />
-              <h4>
-                <pre>
-                  ครั้งที่ 1 : วันที่ 08/04/66 เวลา 13 : 00 - 16 : 00 ห้อง 7313
-                </pre>
-              </h4>
-              <br />
-              <h4>
-                <pre>
-                  ครั้งที่ 2 : วันที่ 15/04/66 เวลา 13 : 00 - 16 : 00 ห้อง 7313
-                </pre>
-              </h4>
-              <br />
-              <h4>
-                <pre>
-                  ครั้งที่ 3 : วันที่ 22/04/66 เวลา 13 : 00 - 16 : 00 ห้อง 7313
-                </pre>
-              </h4>
-              <br />
-              <h4>
-                <pre>
-                  ครั้งที่ 4 : วันที่ 29/04/66 เวลา 13 : 00 - 16 : 00 ห้อง 7313
-                </pre>
-              </h4>
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <h4>
-                <pre>
-                  ครั้งที่ 15 : วันที่ xx/xx/xxxx เวลา 13 : 00 - 16 : 00 ห้อง
-                  7313
-                </pre>
-              </h4>
+
+              <pre>
+                {timetable.map((timetables, index) => (
+                  <div key={index}>
+                    
+                      <pre>
+                        ครั้งที่ {index + 1} :   วันที่   {formatDate(timetables.date)}          เวลา  {" "}
+                        {timetables.time_slot_id === 1
+                    ? "09:30 - 12:30"
+                    : timetables.time_slot_id === 2
+                    ? "13:30 - 16:30"
+                    : timetables.time_slot_id === 3
+                    ? "17:00 - 20:00"
+                    : "ไม่ระบุเวลา"}{" "}       ห้อง   {timetables.room_number}
+                      </pre>
+               
+                  </div>
+                ))}
+              </pre>
               <br />
               <button onClick={handleConfirm}>ลบรายวิชา </button>
               <button onClick={handleEditOptions}>แก้ไข </button>

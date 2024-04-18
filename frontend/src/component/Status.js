@@ -127,7 +127,7 @@ export default function Status() {
                   {reservation.approve === 1
                     ? "อนุมัติ"
                     : reservation.approve === 2
-                    ? "รออนุมัติ"
+                    ? "ดำเนินการ"
                     : reservation.approve === 3
                     ? "รออนุมัติ"
                     : reservation.approve === 0
@@ -150,7 +150,7 @@ function StatusBar({ onFilterChange }) {
   return (
     <div className="status-bar">
       <button onClick={() => handleClick(null)}>ทั้งหมด</button>
-      <button onClick={() => handleClick(2)}>รอการอนุมัติ</button>
+      <button onClick={() => handleClick(2)}>ดำเนินการ</button>
       <button onClick={() => handleClick(1)}>อนุมัติ</button>
       <button onClick={() => handleClick(0)}>ไม่อนุมัติ</button>
     </div>

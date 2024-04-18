@@ -68,7 +68,7 @@ export default function CancelReserva() {
                 <br/>สถานะคำขอ : {reservation.approve	 === 1
                   ? "อนุมัติ"
                   : reservation.approve	 === 2
-                  ? "รออนุมัติ"
+                  ? "ดำเนินการ"
                   : reservation.approve	 === 3
                   ? "รออนุมัติ"
                   : reservation.approve	=== 0
