@@ -5,30 +5,45 @@ import Header from '../../component/Header'
 import Menu from '../../component/Menu'
 import WhiteRectangle from '../../component/WhiteRectangle'
 import Status from '../../component/Status'
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import StatusBar from '../../component/statusBar'
 export default function CancelReserva() {
-  
-  const [reservations, setReservations] = useState([]);
+  const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const [reservations, setReservations] = useState([]);
+  const { reservationId } = useParams();
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/data/reservations/approve")
-      .then((response) => {
-        setReservations(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching reservations data:", error);
-      });
-
-    axios.get("http://localhost:8080/api/data/allRooms")
-      .then((response) => {
-        setRooms(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching rooms data:", error);
-      });
+    const userDataFromStorage = localStorage.getItem("userData");
+    console.log("userData B3 :", userDataFromStorage);
+    if (userDataFromStorage) {
+      setUserData(JSON.parse(userDataFromStorage));
+    }
   }, []);
 
+  useEffect(() => {
+    if (userData && userData.username) {
+      axios
+        .get("http://localhost:8080/api/data/reservations", {
+          params: {
+            username: userData.username,
+          },
+        })
+        .then((response) => {
+          setReservations(response.data);
+          console.log("ข้อมูลที่ได้ ", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching reservations data:", error);
+        });
+    }
+  }, [userData, reservationId]);
+
+  const handleItemClick = (reservationId) => {
+    navigate(`/reservations/reservationTwo/${reservationId}`);
+  };
   
 
   return (
@@ -39,27 +54,22 @@ export default function CancelReserva() {
     <WhiteRectangle >
     <div className="status">
     {reservations
-        .filter((reservation) => reservation.approve === 2) // Filter only reservations with status 2 (รอการอนุมัติ)
+        .filter((reservation) => reservation.approve === 3) // เอาแค่ข้อมูล 2 (รอการอนุมัติ)
         .map((reservation) => {
           const room = rooms.find((room) => room.id === reservation.room_id);
           return (
-            <div key={reservation.id} className="item">
+            
+            <div key={reservation.id} className="item" onClick={() => handleItemClick(reservation.id)}>
               <i className="bi bi-calendar-check"></i>
               <p><pre>
-                วันที่ : {" "}
-                {new Date(reservation.date_reser).toLocaleDateString()}     เวลา : {" "}
-                {reservation.time_slot_id === 1
-                  ? "09:30 - 12:30"
-                  : reservation.time_slot_id === 2
-                  ? "13:30 - 16:30"
-                  : reservation.time_slot_id === 3
-                  ? "17:00 - 20:00"
-                  : "ไม่ระบุเวลา"}
-                <br />
-                 ห้อง : {reservation.room_number }     ชั้น : {reservation.floor }     อาคาร :  {reservation.building_name }
+                วันที่ทำรายการ : {" "}
+                {new Date(reservation.date_reser).toLocaleDateString()}     ชื่อโครงการ : {reservation.objective}
+                
                 <br/>สถานะคำขอ : {reservation.approve	 === 1
                   ? "อนุมัติ"
                   : reservation.approve	 === 2
+                  ? "รออนุมัติ"
+                  : reservation.approve	 === 3
                   ? "รออนุมัติ"
                   : reservation.approve	=== 0
                   ? "ไม่อนุมัติ"

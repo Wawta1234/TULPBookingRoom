@@ -116,7 +116,7 @@ function handleCancelReservation(reservationId) {
                 </div>
               ))}
               <br/><br/><br/>
-              {reservations[0].approve === 2 && (
+              {reservations[0].approve === 3 && (
                 <button onClick={() => handleCancelReservation(reservationId)}style={{ backgroundColor: '#C3002F', color: 'white' }}>
                   ยกเลิกคำขอ
                 </button>

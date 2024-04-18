@@ -87,8 +87,8 @@ export default function CheckRoom() {
               ประเภทห้อง :
               <select name="room_type" onChange={handleFilterChange}>
               <option value="">-กรุณาเลือกประเภทห้อง-</option>
-              <option value="1"> ห้องประชุม</option>
-              <option value="2">ห้องเรียน</option>
+              <option value="1"> ห้องเรียน</option>
+              <option value="2">ห้องประชุม</option>
 
             </select>
             </p>

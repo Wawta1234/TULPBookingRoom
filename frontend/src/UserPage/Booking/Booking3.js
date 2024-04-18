@@ -31,7 +31,7 @@ const Booking3 = () => {
     const requestBody = {
       user_id: userData.username,
       date_reser: new Date(),
-      approve: 2,
+      approve: 3,
       objective: objective,
       details: selectedRooms.map(room => ({
         room_id: room.room_number,

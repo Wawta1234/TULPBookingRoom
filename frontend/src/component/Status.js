@@ -48,6 +48,7 @@ export default function Status() {
         });
     }
   }, [userData && userData.username]);
+  
   console.log(
     "usename Data in status is:",
     userData ? userData.username : "userData is null"
@@ -126,6 +127,8 @@ export default function Status() {
                   {reservation.approve === 1
                     ? "อนุมัติ"
                     : reservation.approve === 2
+                    ? "รออนุมัติ"
+                    : reservation.approve === 3
                     ? "รออนุมัติ"
                     : reservation.approve === 0
                     ? "ไม่อนุมัติ"
