@@ -12,17 +12,16 @@ export default function Room({
   selectedRooms,
   setSelectedRooms,
 }) {
-  const [roomNumber, setroomNumber] = useState([]);
+  const [roomNumber, setRoomNumber] = useState([]);
   const [buildingName, setBuildingName] = useState("");
   const [dateRange, setDateRange] = useState([]);
-  const [selectedTime, setSelectedTime] = useState("");
+  const [roomAvailability, setRoomAvailability] = useState({});
 
   useEffect(() => {
     const startDate = new Date(dateStart);
     const endDate = new Date(dateEnd);
     const range = [];
 
-    // Generate the date range array
     for (
       let date = startDate;
       date <= endDate;
@@ -30,17 +29,14 @@ export default function Room({
     ) {
       range.push(new Date(date));
     }
-
     setDateRange(range);
 
-    // Fetch room data
     axios
       .get("http://localhost:8080/api/data/roomForAdd", {
         params: { building_id, floor, capacity, room_type },
       })
       .then((response) => {
-        console.log(response.data);
-        setroomNumber(response.data);
+        setRoomNumber(response.data);
 
         axios
           .get(`http://localhost:8080/api/data/building/${building_id}`)
@@ -56,14 +52,56 @@ export default function Room({
       });
   }, [building_id, floor, capacity, room_type, dateStart, dateEnd]);
 
+  useEffect(() => {
+    const fetchData = async (room) => {
+      const availability = {};
+      for (
+        let currentDate = new Date(dateStart);
+        currentDate <= new Date(dateEnd);
+        currentDate.setDate(currentDate.getDate() + 1)
+      ) {
+        const formattedDate = currentDate.toISOString().split("T")[0];
+        for (let time = 1; time <= 3; time++) {
+          try {
+            const response = await axios.get(
+              "http://localhost:8080/api/data/roomAvailable",
+              {
+                params: {
+                  time_slot_id: time,
+                  date_use: formattedDate,
+                  room_id: room.id,
+                },
+              }
+            );
+            const count = response.data.count;
+            availability[formattedDate] = availability[formattedDate] || {};
+            availability[formattedDate][time] = count;
+          } catch (error) {
+            console.error("Error fetching room availability:", error);
+          }
+        }
+      }
+      setRoomAvailability((prevAvailability) => ({
+        ...prevAvailability,
+        [room.id]: availability,
+      }));
+    };
+
+    roomNumber.forEach((room) => {
+      fetchData(room);
+    });
+  }, [dateStart, dateEnd, roomNumber]);
+
   const handleTimeSelect = (time, room, date) => {
     const selectedRoom = {
       room_number: room.room_number,
       date: date,
       selectedTime: time,
     };
-    setSelectedRooms(prevSelectedRooms => [...prevSelectedRooms, selectedRoom]);
-    console.log("ห้องที่เลือก : ", selectedRoom);
+    setSelectedRooms((prevSelectedRooms) => [
+      ...prevSelectedRooms,
+      selectedRoom,
+    ]);
   };
 
   return (
@@ -73,48 +111,58 @@ export default function Room({
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
       />
 
-      {/* Start looping from here */}
       {dateRange.map((date, index) => (
         <div key={index}>
           <pre>
             <h2>
-              {" "}
               อาคาร : {buildingName} ชั้น : {floor} วันที่{" "}
               {date.toLocaleDateString()}
             </h2>
           </pre>
-          {roomNumber.map((room, roomIndex) => (
-            <div key={roomIndex} className="item">
-              <i className="bi bi-door-open"></i>
-              <p>
-                <h2>{room.room_number}</h2>
-                <button
-                  className="button"
-                  onClick={() => handleTimeSelect("1", room, date)}
-                >
-                  09 : 00 - 12 : 30
-                </button>
-                <button
-                  className="button"
-                  onClick={() => handleTimeSelect("2", room, date)}
-                >
-                  13 : 30 - 16 : 30
-                </button>
-                <button
-                  className="button"
-                  onClick={() => handleTimeSelect("3", room, date)}
-                >
-                  17 : 00 - 20 : 00
-                </button>
+          {roomNumber.map((room, roomIndex) => {
+            const roomAvailabilityForDate = roomAvailability[room.id] || {};
+            const availableTimes = Object.keys(
+              (roomAvailabilityForDate[date.toISOString().split("T")[0]] || {})
+            );
 
-                <br />
-                <span className="room-details">
-                  <span className="details-label">จำนวนที่นั่ง: </span>{" "}
-                  {room.capacity} ,
-                </span>
-              </p>
-            </div>
-          ))}
+            return (
+              <div key={roomIndex} className="item">
+                <i className="bi bi-door-open"></i>
+                <p>
+                  <h2>{room.room_number}</h2>
+
+                  {[1, 2, 3].map((time) => {
+                    const availableCount =
+                      (roomAvailabilityForDate[date.toISOString().split("T")[0]] || {})[time] || 0;
+                    const isAvailable = availableCount > 0;
+
+                    return (
+                      <button
+                        key={time}
+                        className={isAvailable ? "disabled-button" : "button"}
+                        onClick={() =>
+                          !isAvailable &&
+                          handleTimeSelect(time.toString(), room, date)
+                        }
+                      >
+                        {time === 1
+                          ? "09 : 00 - 12 : 30"
+                          : time === 2
+                          ? "13 : 30 - 16 : 30"
+                          : "17 : 00 - 20 : 00"}
+                      </button>
+                    );
+                  })}
+
+                  <br />
+                  <span className="room-details">
+                    {/* <span className="details-label">จำนวนที่นั่ง: </span>{" "}
+                    {room.capacity} , */}
+                  </span>
+                </p>
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>

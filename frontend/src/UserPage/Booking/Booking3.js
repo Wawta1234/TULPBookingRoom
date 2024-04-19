@@ -18,6 +18,16 @@ const Booking3 = () => {
   const selectedTime = location.state ? location.state.selectedTime : "";
   const [reservationId, setReservationId] = useState(null);
   const [reservationsDetails, setReservationsDetails] = useState([]);
+
+  useEffect(() => {
+    console.log("Selected rooms:", selectedRooms);
+    console.log("Building:", building);
+    console.log("Floor:", floor);
+    console.log("Capacity:", capacity);
+    console.log("Date:", date);
+    console.log("Selected time:", selectedTime);
+  }, [selectedRooms, building, floor, capacity, date, selectedTime]);
+  
   
   useEffect(() => {
     const userDataFromStorage = localStorage.getItem("userData");

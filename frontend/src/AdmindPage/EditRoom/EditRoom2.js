@@ -131,8 +131,7 @@ export default function EditRoom2() {
                 {" "}
                 <pre>
                   {" "}
-                  รหัสวิชา : {subject.subject} รายวิชา : {subject.subject_name}{" "}
-                  ผู้สอน : {teacherName}{" "}
+                  รหัสวิชา : {subject.subject}       รายวิชา : {subject.subject_name}{" "}     ผู้สอน : {teacherName}{" "}
                 </pre>
               </h3>
               <br />
