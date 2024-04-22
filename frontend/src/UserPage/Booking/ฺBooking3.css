@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+*{
+    font-family: 'Roboto', sans-serif; 
+    margin: 0;
+    padding: 0;
+}
+.edit-btn {
+    background-color: #4caf50; /* สีพื้นหลัง */
+    color: white; /* สีตัวอักษร */
+    border: none; /* ไม่มีเส้นขอบ */
+    padding: 10px 20px; /* ขนาดการเสียบ */
+    cursor: pointer; /* เคอร์เซอร์เป็นเครื่องมือ */
+    border-radius: 10px; /* รูปร่างเส้นขอบ */
+    font-size: 16px; /* ขนาดตัวอักษร */
+    margin-right: 10px; /* ระยะห่างด้านขวา */
+  }
+  
+  /* เตรียมปุ่มตกลง (confirm-btn) */
+  .confirm-btn {
+    background-color: #008cba; /* สีพื้นหลัง */
+    color: white; /* สีตัวอักษร */
+    border: none; /* ไม่มีเส้นขอบ */
+    padding: 10px 20px; /* ขนาดการเสียบ */
+    cursor: pointer; /* เคอร์เซอร์เป็นเครื่องมือ */
+    border-radius: 10px; /* รูปร่างเส้นขอบ */
+    font-size: 16px; /* ขนาดตัวอักษร */
+  }
+  
+  /* เมนู */
+  .menu {
+    display: flex; /* การแสดงผลเป็นกลุ่ม */
+    justify-content: space-between; /* การจัดเรียง */
+    align-items: center; /* การจัดการตำแหน่งของรายการ */
+    padding: 20px; /* การจัดเรียงของรายการ */
+  }
+  
+  /* ส่วนหัว */
+  .header {
+    background-color: #333; /* สีพื้นหลัง */
+    color: white; /* สีตัวอักษร */
+    padding: 20px; /* การจัดเรียงของรายการ */
+    text-align: center; /* การจัดเรียงของรายการ */
+  }
+  
+  /* ส่วนของรายละเอียด */
+  .contentbooking3 {
+    padding: 20px; /* การจัดเรียงของรายการ */
+  }
+  
+  /* พื้นหลังขาว */
+  .whiterectangle {
+    background-color: #fff; /* สีพื้นหลัง */
+    padding: 20px; /* การจัดเรียงของรายการ */
+    margin-top: 20px; /* การจัดเรียงของรายการ */
+    border-radius: 10px; /* รูปร่างเส้นขอบ */
+  }
+  
+  /* การจัดรูปแบบของปุ่มแก้ไขและปุ่มตกลง */
+  .edit-btn,
+  .confirm-btn {
+    background-color: #4caf50; /* สีพื้นหลัง */
+    color: white; /* สีตัวอักษร */
+    border: none; /* ไม่มีเส้นขอบ */
+    padding: 10px 20px; /* ขนาดการเสียบ */
+    cursor: pointer; /* เคอร์เซอร์เป็นเครื่องมือ */
+    border-radius: 10px; /* รูปร่างเส้นขอบ */
+    font-size: 16px; /* ขนาดตัวอักษร */
+    margin-right: 10px; /* ระยะห่างด้านขวา */
+  }
+  
+  .edit-btn:hover,
+  .confirm-btn:hover {
+    opacity: 0.8; /* ความโปร่งใสเมื่อชี้ */
+  }
+  

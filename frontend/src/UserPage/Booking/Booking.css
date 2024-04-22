@@ -4,19 +4,39 @@
     margin: 0;
     padding: 0;
 }
-.content{
-    text-align: center;
+.Booking{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-top: 10px;
 }
-.content h2{
-    margin-top: 30px;
-    color: #c3002f;
+.Booking form{
+  max-width: 400px;
+  width: 100%;
+}
+.Booking h2{
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+.Booking label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #555;
 }
 
-.content form{
-    margin-top: 20px;
-    font-size: 25px;
-    
-}
+.Booking select,
+  .Booking input[type="text"],
+  .Booking input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
 .content form button{
     background-color: #4caf50; /* สีเขียว */
     color: white; /* สีของตัวอักษร */

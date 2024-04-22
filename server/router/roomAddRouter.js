@@ -17,19 +17,19 @@ roomAddRouter.get("/api/data/roomAll", (req, res) => {
     console.log("Request body in get data2:", req.body);
 });
 
-roomAddRouter.get("/api/data/roomAllLL", (req, res) => {
-  db.query(
-    "SELECT room.* from  room",
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    }
-  );
-    console.log("Request body in get data1:", req.body);
-});
+// roomAddRouter.get("/api/data/roomAllLL", (req, res) => {
+//   db.query(
+//     "SELECT room.* from  room",
+//     (err, result) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         res.send(result);
+//       }
+//     }
+//   );
+//     console.log("Request body in get data1:", req.body);
+// });
 
 
 roomAddRouter.get("/api/data/roomAvailable", (req, res) => {

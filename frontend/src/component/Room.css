@@ -37,6 +37,10 @@
    padding: 5px;
    border-radius: 10px;
 } 
+
+.button:hover{
+    background-color: rgb(13, 157, 35);
+}
 .disabled-button {
     background-color: gray; 
     color: white; 
@@ -46,6 +50,10 @@
     padding: 5px;
     border-radius: 10px;
     font-size : 20px;
+    
+}
+.disabled-button:hover {
+    background-color: gray; /* เปลี่ยนสีพื้นหลังเมื่อชี้เม้าส์ไปที่ปุ่ม */
 }
 .button i{
     margin: 0px;

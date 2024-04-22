@@ -5,6 +5,7 @@ import Header from "../../component/Header";
 import WhiteRectangle from "../../component/WhiteRectangle";
 import Swal from "sweetalert2";
 import { useNavigate, useLocation } from "react-router-dom";
+// import "../Booking/Booking3.css";
 
 const Booking3 = () => {
   const navigate = useNavigate();

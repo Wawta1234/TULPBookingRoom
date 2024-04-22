@@ -52,14 +52,21 @@ export default function Booking() {
       <Header />
       <Menu />
       <WhiteRectangle>
-        <div className="content">
+        <div className="Booking">
           <h2>กรุณากรอกข้อมูลให้ครบ</h2>
-          <form onSubmit={navigateToBook}>
-            ระบุ วัน เดือน ปี ที่ต้องการเริ่มการจอง :
-            <input type="date" name="dateStart" onChange={handleFilterChange} />
-            <br></br>
-            ระบุ วัน เดือน ปี ที่ต้องการสิ้นสุดการจอง :
-            <input type="date" name="dateEnd" onChange={handleFilterChange} />
+          <form action="" method="post">
+            <form action="" method="get">
+              ระบุ วัน เดือน ปี ที่ต้องการเริ่มการจอง :
+              <input
+                type="date"
+                name="dateStart"
+                onChange={handleFilterChange}
+              />
+            </form>
+            <form action="" method="get">
+              ระบุ วัน เดือน ปี ที่ต้องการสิ้นสุดการจอง :
+              <input type="date" name="dateEnd" onChange={handleFilterChange} />
+            </form>
             <p></p>
             อาคาร :
             <select name="building_id" onChange={handleFilterChange}>

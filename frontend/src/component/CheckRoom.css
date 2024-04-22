@@ -19,7 +19,7 @@
     /* margin: 20px auto;  */
   }
   
-  
+
   .checkroom h2 {
     color: #333;
     font-size: 1.5rem;
@@ -50,4 +50,29 @@
 
   #meeting-room,#class-room {
   margin-left: 20px; /* ปรับระยะห่างของห้องประชุมและห้องบรรยาย */
+}
+
+.button{
+  background-color: rgb(70, 141, 0);
+  font-size : 20px;
+  padding: 5px;
+  border-radius: 10px;
+} 
+
+.button:hover{
+   background-color: rgb(70, 141, 0);
+}
+.disabled-button {
+   background-color: gray; 
+   color: white; 
+   border: none; 
+   padding: 10px 20px; 
+   cursor: not-allowed; 
+   padding: 5px;
+   border-radius: 10px;
+   font-size : 20px;
+   
+}
+.disabled-button:hover {
+   background-color: gray; /* เปลี่ยนสีพื้นหลังเมื่อชี้เม้าส์ไปที่ปุ่ม */
 }

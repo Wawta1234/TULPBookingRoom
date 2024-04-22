@@ -3,18 +3,17 @@ import Menu from "../../component/Menu";
 import Header from "../../component/Header";
 import WhiteRectangle from "../../component/WhiteRectangle";
 import { useNavigate } from "react-router-dom";
-import "./CheckRoom.css"
+import "./CheckRoom.css";
 export default function CheckRoom() {
-    const navigate = useNavigate();
-    const [filterCriteria, setFilterCriteria] = useState({
-      dateStart: "",
-      dateEnd: "",
-      building_id: "",
-      capacity: "",
-      floor: ""
-    });
+  const navigate = useNavigate();
+  const [filterCriteria, setFilterCriteria] = useState({
+    building_id: "",
+    floor: "",
+    room_type: "",
+    dateStart: "",
+    dateEnd: "",
+  });
 
-    
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
     setFilterCriteria({
@@ -25,7 +24,7 @@ export default function CheckRoom() {
 
   const navigateToCheckRoom2 = () => {
     navigate("/checkRoom/checkRoom2", { state: filterCriteria });
-  }
+  };
 
   useEffect(() => {
     const { dateStart, dateEnd } = filterCriteria;
@@ -38,7 +37,7 @@ export default function CheckRoom() {
         alert("กรุณาเลือกวันเริ่มต้นที่มาก่อนวันสิ้นสุด");
         setFilterCriteria({
           ...filterCriteria,
-          dateEnd: "" // เคลียร์ค่าวันสิ้นสุด
+          dateEnd: "", // เคลียร์ค่าวันสิ้นสุด
         });
       }
     }
@@ -49,10 +48,10 @@ export default function CheckRoom() {
       <Header />
       <Menu />
       <WhiteRectangle>
-      <div className="checkroom">
+        <div className="checkroom">
           <h2>กรุณากรอกข้อมูลให้ครบ</h2>
           <form action="" method="post">
-          อาคาร :
+            อาคาร :
             <select name="building_id" onChange={handleFilterChange}>
               <option value="">-กรุณาเลือกอาคาร-</option>
               <option value="1">อาคารบุญชูปณิธาน</option>
@@ -64,38 +63,40 @@ export default function CheckRoom() {
               <option value="7">อาคารปฏิบัติการสาขาออกแบบหัตถอุตสาหกรรม</option>
             </select>
             <p>
-            ชั้น :
-            <select name="floor" onChange={handleFilterChange}>
-              <option value="">-กรุณาเลือกชั้น-</option>
-              <option value="1"> 1</option>
-              <option value="2"> 2</option>
-              <option value="3"> 3</option>
-              <option value="4"> 4</option>
-              <option value="5"> 5</option>
-            </select>
-          </p>
-            {/* <p>
-              จำนวนผู้เข้าร่วม :
-              <input type="text" name="capacity" onChange={handleFilterChange} />
+              ชั้น :
+              <select name="floor" onChange={handleFilterChange}>
+                <option value="">-กรุณาเลือกชั้น-</option>
+                <option value="1"> 1</option>
+                <option value="2"> 2</option>
+                <option value="3"> 3</option>
+                <option value="4"> 4</option>
+                <option value="5"> 5</option>
+              </select>
             </p>
-             */}
             <form action="" method="get">
-              ระบุ วัน เดือน ปี ที่ต้องการตรวขสอบ :
-              <input type="date" name="dateStart" onChange={handleFilterChange} />
+              ระบุ วัน เดือน ปี ที่ต้องการเริ่มการตรวจสอบ :
+              <input
+                type="date"
+                name="dateStart"
+                onChange={handleFilterChange}
+              />
+            </form>
+            <form action="" method="get">
+              ระบุ วัน เดือน ปี ที่ต้องการสิ้นสุดการตรวจสอบ :
+              <input type="date" name="dateEnd" onChange={handleFilterChange} />
             </form>
             <p>
               ประเภทห้อง :
               <select name="room_type" onChange={handleFilterChange}>
-              <option value="">-กรุณาเลือกประเภทห้อง-</option>
-              <option value="1"> ห้องเรียน</option>
-              <option value="2">ห้องประชุม</option>
-
-            </select>
+                <option value="">-กรุณาเลือกประเภทห้อง-</option>
+                <option value="1"> ห้องเรียน</option>
+                <option value="2">ห้องประชุม</option>
+              </select>
             </p>
-            <button onClick={ navigateToCheckRoom2}>ตกลง </button> 
+            <button onClick={navigateToCheckRoom2}>ตกลง </button>
           </form>
         </div>
       </WhiteRectangle>
     </>
   );
-  }
+}
