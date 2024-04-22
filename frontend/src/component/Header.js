@@ -31,7 +31,7 @@ console.log("userData Header is:" , userData);
     }
   };
   return (
-    <header className="header">
+    <header className="body">
       <h1>TULP<br /> 
         Booking Room</h1> {/* ชื่อ "TULP Booking Room" อยู่ทางซ้ายมือ */}
         

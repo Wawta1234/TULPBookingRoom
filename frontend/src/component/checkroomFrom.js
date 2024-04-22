@@ -66,10 +66,18 @@ export default function CheckroomFrom() {
             <option value="5"> 5</option>
           </select>
         </p>
-        <div>
-          ระบุ วัน เดือน ปี ที่ต้องการตรวขสอบ :
-          <input type="date" name="dateStart" onChange={handleFilterChange} />
-        </div>
+        <form action="" method="get">
+              ระบุ วัน เดือน ปี ที่ต้องการเริ่มการตรวจสอบ :
+              <input
+                type="date"
+                name="dateStart"
+                onChange={handleFilterChange}
+              />
+            </form>
+            <form action="" method="get">
+              ระบุ วัน เดือน ปี ที่ต้องการสิ้นสุดการตรวจสอบ :
+              <input type="date" name="dateEnd" onChange={handleFilterChange} />
+            </form>
         <p>
           ประเภทห้อง
           <select name="room_type" onChange={handleFilterChange}>

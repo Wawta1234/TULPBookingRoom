@@ -15,6 +15,7 @@ import ReservationYes from "./UserPage/Reservations/ReservationYes";
 import ReservationNot from "./UserPage/Reservations/ReservationNot";
 import CancelReserva from "./UserPage/Cancel/CancelReserva";
 import CancelLast from "./UserPage/Cancel/CancelLast";
+import CheckAvailabilityForPublic from "./UserPage/publicUser/CheckAvailability";
 
 import AdminHome from "./AdmindPage/Home/AdminHome";
 import RoomRec from "./AdmindPage/Room Recording/RoomRec";
@@ -75,6 +76,7 @@ function App() {
          <Route path="/checkRoomPublic" element ={<CheckAvailability/>} />
          <Route path="/checkRoomPublic/checkRoomPublic2" element ={<CheckAvailability2/>} />
          <Route path="/RoomData" element ={<RoomData/>} />
+         <Route path="/CheckAvailabilityForPublic" element={<CheckAvailabilityForPublic />} />
          
         
         </Routes>

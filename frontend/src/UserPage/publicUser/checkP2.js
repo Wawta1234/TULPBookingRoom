@@ -22,7 +22,7 @@ export default function CheckAvailability2() {
         Booking Room
       </h1>
       
-    <RoomCheck building_id={filterCriteria.building_id} floor={filterCriteria.floor} room_type={filterCriteria.room_type}/>
+      <RoomCheck building_id = {filterCriteria.building_id}  floor={filterCriteria.floor} room_type={ filterCriteria.room_type} dateStart={filterCriteria.dateStart}  dateEnd={filterCriteria.dateEnd}/> 
     
    </div>
   )

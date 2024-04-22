@@ -1,14 +1,13 @@
-/* WhiteRectangle.css */
 .white-rectangle {
-    margin-top: 10px;
-    margin-left: 20px;
-    text-align: center;
-    float: right;
-    background-color: rgb(255, 255, 255);
-    position: absolute;
-    right: 10px;
-    width: 67%; 
-    height: 100%;
-    border-radius: 30px;
-  }
-  
+  margin-top: 10px;
+  margin-left: 20px;
+  text-align: center;
+  float: right;
+  background-color: rgb(255, 255, 255);
+  position: absolute;
+  right: 10px;
+  width: 67%; 
+  height: 100%;
+  border-radius: 30px;
+  overflow-y: auto; /* เพิ่ม overflow-y เป็น auto เพื่อให้มันเลื่อนเฉพาะในส่วนของเนื้อหา */
+}
