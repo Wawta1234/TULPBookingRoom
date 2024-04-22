@@ -13,15 +13,29 @@ export default function Booking2() {
 
   const navigate = useNavigate();
 
-  // console.log("Filter Criteria:", filterCriteria);
+  console.log("selectedRooms :", selectedRooms);
   const navigateToBooking = () => {
     navigate("/Booking");
   };
 
   const navigateToBooking3 = () => {
-    navigate("/Booking/booking2/booking3", { state: { selectedRooms, building: filterCriteria.building_id, dateStart: filterCriteria.dateStart, dateEnd: filterCriteria.dateEnd  , floor: filterCriteria.floor ,  date: filterCriteria.date , capacity: filterCriteria.capacity} });
+    navigate("/Booking/booking2/booking3", {
+      state: {
+        selectedRooms: selectedRooms.map(room => ({
+          ...room,
+          room_number: room.room_number
+        })),
+        building: filterCriteria.building_id,
+        dateStart: filterCriteria.dateStart,
+        dateEnd: filterCriteria.dateEnd,
+        floor: filterCriteria.floor,
+        date: filterCriteria.date,
+        capacity: filterCriteria.capacity,
+      },
+    });
   };
   
+
   return (
     <>
       <Header />
@@ -49,14 +63,13 @@ export default function Booking2() {
                 </p>
               </div>
             ))}
-          
-           <button className="edit-btn" onClick={navigateToBooking}>
-           แก้ไข
-         </button>
-         <button onClick={navigateToBooking3}>ตกลง</button>
-         </div>
+
+            <button className="edit-btn" onClick={navigateToBooking}>
+              แก้ไข
+            </button>
+            <button onClick={navigateToBooking3}>ตกลง</button>
+          </div>
         )}
-       
 
         <Room
           building_id={filterCriteria.building_id}
@@ -68,8 +81,6 @@ export default function Booking2() {
           selectedRooms={selectedRooms} // ส่ง selectedRooms ผ่าน props
           setSelectedRooms={setSelectedRooms}
         />
-
-        
       </WhiteRectangle>
     </>
   );

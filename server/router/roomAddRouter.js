@@ -14,8 +14,23 @@ roomAddRouter.get("/api/data/roomAll", (req, res) => {
       }
     }
   );
-  //    console.log("Request body in get data:", req.body);
+    console.log("Request body in get data2:", req.body);
 });
+
+roomAddRouter.get("/api/data/roomAllLL", (req, res) => {
+  db.query(
+    "SELECT room.* from  room",
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+    console.log("Request body in get data1:", req.body);
+});
+
 
 roomAddRouter.get("/api/data/roomAvailable", (req, res) => {
   const { time_slot_id, date_use, room_id } = req.query; // ดึงค่าพารามิเตอร์จาก req.query

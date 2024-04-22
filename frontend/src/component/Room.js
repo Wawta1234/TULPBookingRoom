@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Room.css";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Room({
   building_id,
@@ -93,8 +94,25 @@ export default function Room({
   }, [dateStart, dateEnd, roomNumber]);
 
   const handleTimeSelect = (time, room, date) => {
+    const isRoomAlreadySelected = selectedRooms.some(selectedRoom => 
+      selectedRoom.room === room.id && 
+      selectedRoom.date.getTime() === date.getTime() && 
+      selectedRoom.selectedTime === time
+    );
+  
+    if (isRoomAlreadySelected) {
+      Swal.fire({
+        title: "ไม่สามารถเลือกช่วงเวลานี้ได้",
+        text: "เนื่องจากห้องนี้ได้ถูกเลือกไปแล้วในช่วงเวลาและวันที่นี้  กรุณาเลือกวันอื่น หรือ ช่วงเวลาอื่นแทน",
+        icon: "warning",
+        confirmButtonText: "ตกลง"
+      });
+      return;
+    }
+  
     const selectedRoom = {
-      room_number: room.room_number,
+      room: room.id,
+      room_number: room.room_number, 
       date: date,
       selectedTime: time,
     };
@@ -103,6 +121,7 @@ export default function Room({
       selectedRoom,
     ]);
   };
+  
 
   return (
     <div className="room">
@@ -156,8 +175,8 @@ export default function Room({
 
                   <br />
                   <span className="room-details">
-                    {/* <span className="details-label">จำนวนที่นั่ง: </span>{" "}
-                    {room.capacity} , */}
+                    <span className="details-label">จำนวนที่นั่ง: </span>{" "}
+                    {room.capacity} 
                   </span>
                 </p>
               </div>

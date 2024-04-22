@@ -13,6 +13,7 @@ const Booking3 = () => {
   const building = location.state ? location.state.building : "";
   const floor = location.state ? location.state.floor : "";
   const capacity = location.state ? location.state.capacity : "";
+  const room_number = location.state ? location.state.room : "";
   const [userData, setUserData] = useState(null);
   const date = location.state ? location.state.date : "";
   const selectedTime = location.state ? location.state.selectedTime : "";
@@ -26,9 +27,9 @@ const Booking3 = () => {
     console.log("Capacity:", capacity);
     console.log("Date:", date);
     console.log("Selected time:", selectedTime);
+    console.log("ROOM NUMBER IS ", room_number);
   }, [selectedRooms, building, floor, capacity, date, selectedTime]);
-  
-  
+
   useEffect(() => {
     const userDataFromStorage = localStorage.getItem("userData");
     if (userDataFromStorage) {
@@ -43,12 +44,12 @@ const Booking3 = () => {
       date_reser: new Date(),
       approve: 3,
       objective: objective,
-      details: selectedRooms.map(room => ({
+      details: selectedRooms.map((room) => ({
         room_id: room.room_number,
         date_use: new Date(room.date),
         std_amount: capacity,
-        time_slot_id: room.selectedTime
-      }))
+        time_slot_id: room.selectedTime,
+      })),
     };
 
     axios
@@ -74,8 +75,6 @@ const Booking3 = () => {
         });
       });
   };
-
-  
 
   const getBuildingName = () => {
     switch (parseInt(building)) {
@@ -116,20 +115,21 @@ const Booking3 = () => {
             {userData ? userData.department : ""}
             <br />
             <br />
-            สถานที่    ชั้น  : {floor}       อาคาร : {getBuildingName()}
+            สถานที่ ชั้น : {floor} อาคาร : {getBuildingName()}
             <br />
             {selectedRooms.map((room, index) => (
               <div key={index}>
-                วันที่  {room.date
-                    ? new Date(room.date).toLocaleDateString()
-                    : ""}{" "}    เวลา : {" "}
+                วันที่{" "}
+                {room.date ? new Date(room.date).toLocaleDateString() : ""} เวลา
+                :{" "}
                 {room.selectedTime === "1"
                   ? "09:30 - 12:30"
                   : room.selectedTime === "2"
                   ? "13:30 - 16:30"
                   : room.selectedTime === "3"
                   ? "17:00 - 20:00"
-                  : ""}{" "}    ห้อง : {room.room_number} <br />
+                  : ""}{" "}
+                ห้อง : {room.room_number} <br />
               </div>
             ))}
           </pre>
@@ -137,7 +137,8 @@ const Booking3 = () => {
           <pre>
             <label for="objective">กรุณาระบุชื่อโครงการ</label>
             <span>&nbsp;&#42;</span>
-            <input type="text" name="objective" /> จำนวนผู้เข้าร่วม : {capacity} <br />
+            <input type="text" name="objective" /> จำนวนผู้เข้าร่วม : {capacity}{" "}
+            <br />
             <label for="Projectdocuments">
               {" "}
               เอกสารอนุมัติโครงการ / กำหนดการ
@@ -155,5 +156,5 @@ const Booking3 = () => {
       </WhiteRectangle>
     </>
   );
-}
+};
 export default Booking3;
