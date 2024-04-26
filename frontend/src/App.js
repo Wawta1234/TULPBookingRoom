@@ -35,6 +35,8 @@ import AdmindReserTwo from "./AdmindPage/AdmindTwo/AdmindReserTwo";
 import CheckAvailability from "./UserPage/publicUser/check";
 import CheckAvailability2 from "./UserPage/publicUser/checkP2";
 import RoomData from "./AdmindPage/RecordRoomData/RoomData";
+import AdminReservationDetail from "./AdmindPage/Reservations/AdminReservationDetail";
+import ReservationDetailTwo from "./AdmindPage/AdmindTwo/ReservationDetailTwo";
 
 
 function App() {
@@ -57,14 +59,14 @@ function App() {
           <Route path="/reservations/reservationNot" element ={<ReservationNot />} />
           <Route path="/cancelReserva" element={<CancelReserva />} />
           <Route path="/cancelReserva/cancelList" element={<CancelLast />} />
-
+          <Route path="/AdmindReservations/AdmindReservationsDetail/:reservationId" element= {<AdminReservationDetail/>} />
           <Route path="/AdminHome" element={<AdminHome />} />
           <Route path="/RoomRecording" element={<RoomRec/>} />
           <Route path="/RoomRecording/RoomRecording2" element={<RoomRec2/>} />
           <Route path="/RoomRecording/RoomRecording2/RoomRecording3" element={<RoomRec3/>} />
           <Route path="/EditRoom" element={<EditRoom />} />
           <Route path="/EditRoom/EditRoom2" element={<EditRoom2 />} />
-          <Route path="/EditRoom//EditRoom2/EditRoom3"element={<EditRoom3 />} />
+          <Route path="/EditRoom/EditRoom2/EditRoom3"element={<EditRoom3 />} />
           <Route path="/AdmindReservations" element ={<AdmindReservation/>} />
           <Route path="/AdmindReservations/ReservationsYes" element ={<AdmindReservationYes/>} />
           <Route path="/AdmindReservations/ReservationsNo" element ={<AdmindReservationNo/>} />
@@ -73,6 +75,7 @@ function App() {
           <Route path="/AdminCheckRoom/AdminCheckRoom1" element={<AdminCheck2 />} />
           <Route path="/AdminHomeTwo" element={<HomeAdd/>} />
           <Route path="/AdmindReserTwo" element={<AdmindReserTwo/>} />
+          <Route path="/AdmindReserTwo/ReservationsDetailTwo/:reservationId" element= {<ReservationDetailTwo/>} />
          <Route path="/checkRoomPublic" element ={<CheckAvailability/>} />
          <Route path="/checkRoomPublic/checkRoomPublic2" element ={<CheckAvailability2/>} />
          <Route path="/RoomData" element ={<RoomData/>} />

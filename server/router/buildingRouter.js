@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../connect'); // Correct the import statement
 const buildingRouter = router;
 
+
 buildingRouter.get('/api/data/building/:id', (req, res) => {
     const buildingId = req.params.id;
     

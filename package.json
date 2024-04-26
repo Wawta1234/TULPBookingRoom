@@ -5,5 +5,9 @@
     "react-bootstrap": "^2.10.1",
     "react-datepicker": "^5.0.0",
     "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "@npmcli/lint": "^1.0.2",
+    "eslint": "^9.1.1"
   }
 }

@@ -29,8 +29,8 @@ export default function AdminBar() {
             <a href="/AdminCheckRoom">ตรวจสอบสถานะห้องว่าง</a>
           </li>
           <li>
-          <i class="bi bi-building-check"></i>
-            <a href="/Roomdata">บันทึกห้อง</a>
+          <i class="bi bi-database-add"></i>
+            <a href="/Roomdata">บันทึกข้อมูลห้อง</a>
           </li>
           
         </ul>

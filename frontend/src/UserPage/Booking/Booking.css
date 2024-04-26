@@ -38,13 +38,13 @@
     border-radius: 4px;
   }
 .content form button{
-    background-color: #4caf50; /* สีเขียว */
-    color: white; /* สีของตัวอักษร */
+    background-color: #4caf50; 
+    color: white;
     font-size: 18px;
-    padding: 10px 50px; /* ขนาดของปุ่ม */
-    border: none; /* ไม่มีเส้นขอบ */
-    border-radius: 25px; /* ทำให้มีเส้นมนมีรูปร่าง */
-    cursor: pointer; /* เปลี่ยนรูปร่างของเคอร์เซอร์เป็นมือ */
+    padding: 10px 50px;
+    border: none; 
+    border-radius: 25px; 
+    cursor: pointer; 
    
 
 }

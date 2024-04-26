@@ -5,7 +5,7 @@ const roomAddRouter = router;
 
 roomAddRouter.get("/api/data/roomAll", (req, res) => {
   db.query(
-    "SELECT room.*, equipment.equipment_name ,  equipment.room_id ,  equipment.quantity, building.building_name FROM room INNER JOIN equipment on room.id = equipment.room_id inner join building on room.building_id = building.id;",
+    "SELECT room.*, equipment.equipment_name ,  equipment.room_id ,  equipment.quantity, building.building_name FROM room LEFT JOIN equipment on room.id = equipment.room_id LEFT JOIN building on room.building_id = building.id;",
     (err, result) => {
       if (err) {
         console.log(err);
@@ -38,8 +38,8 @@ roomAddRouter.get("/api/data/roomAvailable", (req, res) => {
   // ตรวจสอบว่ามีค่าพารามิเตอร์ที่ต้องการหรือไม่
  
   db.query(
-    "SELECT COUNT(*) AS count FROM reservationsdetal WHERE time_slot_id = ? AND date_format(date_use, '%Y-%m-%d') = ? AND room_id = ? ",
-    [time_slot_id, date_use, room_id],
+    "SELECT COUNT(*) AS count FROM roomAvailable  where roomAvailable.room_id = ?  and roomAvailable.date_use = ? and  roomAvailable.time_slot_id",
+    [room_id, date_use,time_slot_id ],
     (err, result) => {
       if (err) {
         console.log(err);

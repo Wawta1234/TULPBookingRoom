@@ -6,14 +6,39 @@ const timetableRouter = router;
 
 
 timetableRouter.get("/api/data/timetable", (req, res) => {
- 
-  db.query("SELECT timetable.* , room.* FROM timetable INNER JOIN room ON timetable.room_id = room.id ", (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
+  const subjectName = req.query.subject; // รับชื่อของ subject จาก query parameters
+
+  db.query(
+    "SELECT id FROM subject WHERE subject = ?",
+    [subjectName],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: "An error occurred while fetching data" });
+      } else {
+        if (result.length > 0) {
+          const subjectId = result[0].id;
+          // console.log("ID ของ subject คือ:", subjectId);
+          // เมื่อได้รับ ID ของ subject แล้ว คุณสามารถทำการค้นหา timetable ที่เกี่ยวข้องกับ subject นี้ได้ต่อไป
+          db.query(
+            "SELECT timetable.*, room.*, subject.*, teacher.* FROM timetable  INNER JOIN room ON timetable.room_id = room.id INNER JOIN subject ON timetable.subject_id = subject.id  INNER JOIN teacher ON subject.teacher_id = teacher.id WHERE subject_id = ?",
+            [subjectId],
+            (err, timetableResult) => {
+              if (err) {
+                console.log(err);
+                res.status(500).json({ error: "An error occurred while fetching timetable data" });
+              } else {
+                res.status(200).json(timetableResult);
+              }
+            }
+          );
+        } else {
+          console.log("ไม่พบ subject ที่มีชื่อเป็น", subjectName);
+          res.status(404).json({ error: "Subject not found" });
+        }
+      }
     }
-  });
+  );
 });
 
 
@@ -63,27 +88,41 @@ timetableRouter.put("/api/data/timetable/update", (req, res) => {
   );
 });
 
-timetableRouter.delete("/api/data/timetable/delete/:subjectId", (req, res) => {
-  const id = req.params.subjectId;
+timetableRouter.delete("/api/data/timetable/delete/:subjectName", (req, res) => {
+  const subjectName = req.params.subjectName;
   console.log("Request body: ", req.body);
-  console.log("id: ", id);
+  console.log("subjectName: ", subjectName);
 
-  // ลบข้อมูลในตาราง timetable
-  db.query("DELETE FROM timetable WHERE subject_id = ?", [id], (err, result) => {
+  // ดึงข้อมูลรหัสวิชาจากตาราง subject โดยใช้ชื่อวิชา
+  db.query("SELECT id FROM subject WHERE subject_name = ?", [subjectName], (err, result) => {
     if (err) {
-      console.log(err);
-      res.status(500).send("เกิดข้อผิดพลาดในการลบข้อมูลในตาราง timetable");
+      console.error(err);
+      res.status(500).send("เกิดข้อผิดพลาดในการค้นหาข้อมูลรหัสวิชาจากตาราง subject");
     } else {
-      // หลังจากลบข้อมูลในตาราง timetable เรียบร้อยแล้ว ก็ลบข้อมูลในตาราง subject ด้วย
-      db.query("DELETE FROM subject WHERE id = ?", [id], (err, result) => {
-        if (err) {
-          console.error(err);
-          res.status(500).send("เกิดข้อผิดพลาดในการลบข้อมูลในตาราง subject");
-        } else {
-          // หากทั้งสองตารางลบข้อมูลสำเร็จ ให้ส่งข้อความแสดงว่าลบข้อมูลเรียบร้อย
-          res.status(200).send("ลบข้อมูลรายวิชาเรียบร้อยแล้ว");
-        }
-      });
+      if (result.length > 0) {
+        const subjectId = result[0].id;
+
+        // ลบข้อมูลในตาราง timetable โดยใช้รหัสวิชา
+        db.query("DELETE FROM timetable WHERE subject_id = ?", [subjectId], (err, result) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send("เกิดข้อผิดพลาดในการลบข้อมูลในตาราง timetable");
+          } else {
+            // หลังจากลบข้อมูลในตาราง timetable เรียบร้อยแล้ว จึงลบข้อมูลในตาราง subject โดยใช้รหัสวิชา
+            db.query("DELETE FROM subject WHERE id = ?", [subjectId], (err, result) => {
+              if (err) {
+                console.error(err);
+                res.status(500).send("เกิดข้อผิดพลาดในการลบข้อมูลในตาราง subject");
+              } else {
+                // หากทั้งสองตารางลบข้อมูลสำเร็จ ให้ส่งข้อความแสดงว่าลบข้อมูลเรียบร้อย
+                res.status(200).send("ลบข้อมูลรายวิชาเรียบร้อยแล้ว");
+              }
+            });
+          }
+        });
+      } else {
+        res.status(404).send("ไม่พบรายวิชาที่ต้องการลบ");
+      }
     }
   });
 });

@@ -41,53 +41,29 @@ reservationRouter.get("/api/data/reservations", (req, res) => {
 
 
 reservationRouter.get("/api/data/reservationsForAdmin", (req, res) => {
-  const username = req.query.username; // รับ username จากพารามิเตอร์ของคำขอ
-  // ค้นหา id ของผู้ใช้จากฐานข้อมูล
-  db.query(
-    `SELECT id FROM user WHERE username = ?`,
-    [username],
-    (err, result) => {
-      if (err) {
+  db.query("SELECT * FROM reservations", (err, result) => {
+    if (err) {
         console.log(err);
-      } else {
-        if (result.length > 0) {
-          const userId = result[0].id; // ดึง id ของผู้ใช้จากผลลัพธ์การค้นหา
-          // ค้นหาข้อมูลการจองของผู้ใช้โดยใช้ userId
-          db.query(
-            `SELECT reservations.*, reservationsdetal.*, room.*, building.building_name 
-            FROM reservations 
-            INNER JOIN reservationsdetal ON reservations.id = reservationsdetal.reservations_id 
-            INNER JOIN room ON reservationsdetal.room_id = room.id 
-            INNER JOIN building ON room.building_id = building.id 
-            WHERE reservations.user_id = ?`,
-            [userId],
-            (err, result) => {
-              if (err) {
-                console.log(err);
-              } else {
-                res.send(result);
-              }
-            }
-          );
-        } else {
-          console.log("User not found");
-          res.send([]); // ส่งข้อมูลว่างกลับถ้าไม่พบผู้ใช้
-        }
-      }
+    } else {
+        res.send(result);
+       
     }
-  );
+});
 });
 
+
+//เรียกดูคำขอของ Admind
 reservationRouter.get("/api/data/reservations/:reservationId", (req, res) => {
   const reservationId = req.params.reservationId; // รับ reservationId จาก URL parameter
   // ค้นหาข้อมูลการจองโดยใช้ reservationId
   db.query(
-    `SELECT reservations.*, reservationsdetal.*, room.*, building.building_name 
+    `SELECT reservations.*, reservationsdetal.*, room.*, building.building_name, user.*
     FROM reservations 
     INNER JOIN reservationsdetal ON reservations.id = reservationsdetal.reservations_id 
     INNER JOIN room ON reservationsdetal.room_id = room.id 
     INNER JOIN building ON room.building_id = building.id 
-    WHERE reservations.id = ?` ,
+    INNER JOIN user ON reservations.user_id = user.id
+    WHERE reservations.id = ?`,
     [reservationId],
     (err, result) => {
       if (err) {
@@ -95,6 +71,53 @@ reservationRouter.get("/api/data/reservations/:reservationId", (req, res) => {
         res.send([]); // ส่งข้อมูลว่างกลับถ้าเกิดข้อผิดพลาด
       } else {
         res.send(result);
+      }
+    }
+  );
+});
+
+//update ค่า approve ในกรณีที่พี่ออมอนุมัติ จาก 3 เป็น 2
+reservationRouter.put("/api/data/reservations/update/:reservationId", (req, res) => {
+  console.log("Request body: ", req.body);
+
+  const reservationId = req.params.reservationId;
+  const approve = req.body.approve;
+
+  // ตรวจสอบว่ามีค่า approve ที่ไม่ใช่ null
+  if (!approve) {
+    return res.status(400).send("Approval status is required");
+  }
+
+  // ทำการอัปเดตค่า approve ในฐานข้อมูล
+  db.query(
+    "UPDATE reservations SET approve = ? WHERE id = ?",
+    [approve, reservationId],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Error updating data");
+      } else {
+        res.send("Values updated");
+      }
+    }
+  );
+});
+
+//update ค่า approve ในกรณีที่ไม่อนุมัติ  approve = 0
+reservationRouter.put("/api/data/reservations/Noapprove/:reservationId", (req, res) => {
+  console.log("Request body: ", req.body);
+  const reservationId = req.params.reservationId;
+  const approve = req.body.approve;
+  // ทำการอัปเดตค่า approve ในฐานข้อมูล
+  db.query(
+    "UPDATE reservations SET approve = ? WHERE id = ?",
+    [approve, reservationId],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Error updating data");
+      } else {
+        res.send("Values updated");
       }
     }
   );

@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* RoomData.css */
+
+.RoomData {
+    padding: 20px;
+  }
+  
+  .RoomData h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form .mb-3 {
+    margin-bottom: 20px;
+  }
+  
+  form .form-label {
+    font-weight: bold;
+    color: #555;
+  }
+  
+  form .form-select,
+  form .form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  form .btn {
+    margin-right: 10px;
+  }
+  
+  .room {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .room .card-body {
+    padding: 20px;
+  }
+  
+  .room p {
+    margin-bottom: 10px;
+  }
+  
+  .room input[type="number"] {
+    width: 1000px;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .room .btn-warning,
+  .room .btn-primary,
+  .room .btn-success {
+    margin-right: 10px;
+  }
+  
+  .RoomData .mb-3 {
+    display: flex;
+    align-items: center;
+}
+
+.RoomData .form-label {
+    flex: 0 0 120px; /* กำหนดขนาดความกว้างของ label */
+    margin-right: 10px; /* ระยะห่างระหว่าง label และ input */
+}
+
+.RoomData .form-select,
+.RoomData .form-control,
+.RoomData input[type="number"]ม
+.RoomData input[type="text"] {
+    flex: 1; /* ให้ input เต็มพื้นที่ที่เหลือ */
+    padding: 6px;
+    width: 20px;
+}
+
+.room input[type="number"] {
+    width: 200px; /* กำหนดความกว้างของ input เป็น 200px */
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

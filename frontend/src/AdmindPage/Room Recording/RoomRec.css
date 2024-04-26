@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.RoomRec {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100%;
+    margin-top: 50px;
+}
+
+.RoomRec h2 {
+    color: #242424;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.RoomRec form {
+    max-width: 500px;
+    width: 100%;
+    margin-left: 20px; /* เพิ่ม margin-left เพื่อห่างซ้ายมากขึ้น */
+    display: grid; /* เปลี่ยนเป็นการใช้ CSS Grid Layout */
+    gap: 10px; /* ระยะห่างระหว่างองค์ประกอบของ Grid */
+}
+
+.RoomRec .form-group {
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 5px; /* ระยะห่างระหว่างองค์ประกอบของ Grid */
+    align-items: center; /* จัดให้อยู่ตรงกลางในแนวดิ่ง */
+}
+
+.RoomRec label {
+    font-weight: bold;
+    color: #555;
+}
+
+.RoomRec select,
+.RoomRec input[type="text"],
+.RoomRec input[type="date"] {
+    width: 100%; /* ให้ขยายตามขนาดของ Grid */
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.RoomRec button {
+    
+    margin-top: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px; /* ปรับขนาด padding ของปุ่ม */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem; /* ปรับขนาดของตัวหนังสือในปุ่ม */
+    width:20%;
+    border-radius:  25px;
+}
+
+.RoomRec button:hover {
+    background-color: #45a049;
+}
